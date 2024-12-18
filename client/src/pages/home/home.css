@@ -20,13 +20,13 @@
   gap: 1rem;
 }
 
-.home__btn {
+/* .home__btn {
   outline: 0;
   background-color: var(--clr-secondary);
   font-size: var(--fs-100);
   padding: 0.5rem 0.7rem;
   border-radius: 10px;
-}
+} */
 
 .home__img {
   width: 25px;
@@ -51,7 +51,7 @@
 
 .home__description {
   font-size: var(--fs-200);
-  font-weight: var(--fw-200);
+  font-weight: var(--fw-400);
   max-width: 40ch;
 }
 

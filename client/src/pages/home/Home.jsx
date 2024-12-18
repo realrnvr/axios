@@ -1,15 +1,17 @@
 import "./home.css";
-
+import { Button } from "@/components/ui/button";
+import { useAuth0 } from '@auth0/auth0-react'
 const Home = () => {
+  const {loginWithRedirect} =useAuth0();
   return (
     <>
       <div className="home__header-wrapper">
         <header className="home__header | container">
           <div className="home__logo">
-            <h1 className="home__title">/MEET</h1>
+            <h1 className="home__title">MEET</h1>
           </div>
           <div className="home__account">
-            <button className="home__btn">Log in</button>
+          <Button variant="secondary" onClick={()=>{loginWithRedirect()}}>Login</Button>
             <button className="home__btn">
               <img className="home__img" src="/sun.svg" alt="" />
             </button>
@@ -36,7 +38,7 @@ const Home = () => {
               </p>
             </div>
             <div className="home__goto">
-              <button className="home__btn">Get Started</button>
+            <Button variant="secondary" onClick={()=>{loginWithRedirect()}}>Get Started</Button>
             </div>
           </div>
           <div className="home__hero-img-wrapper lg-screen">

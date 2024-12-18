@@ -83,7 +83,7 @@
   --ff-primary: "Poppins", sans-serif;
 
   /* colors */
-  --clr-bg: hsl(20 14.3% 4.1%);
+  --clr-bg: hsla(20, 14%, 4%, 0.979);
   --clr-border: hsl(240 3.7% 15.9%);
   --clr-primary: hsl(0 0% 98%);
   --clr-secondary: hsl(240 3.7% 15.9%);

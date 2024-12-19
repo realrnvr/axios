@@ -1,25 +1,13 @@
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
+
 import Hero from "../../pages/home/Hero";
-import { Navigate } from "react-router-dom";
-import { useAuth0 } from "@auth0/auth0-react";
 import Home from "@/pages/home/Home";
-
-const ProtectedRoute = ({element}) => {
-  const { isAuthenticated, isLoading } = useAuth0();
-
-  if (isLoading) {
-    return <div>Loading...</div>;
-  }
-  if (!isAuthenticated) {
-    return <Navigate to="/onboarding" replace />;
-  }
-  return element;
-};
+import ProtectedRoute from "../gaurd/ProtectedRoute";
 
 const router = createBrowserRouter([
   {
     path: "/onboarding",
-    element: <Home/>,
+    element: <Home />,
   },
   {
     path: "/",

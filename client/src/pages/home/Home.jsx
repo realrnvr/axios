@@ -7,7 +7,7 @@ import "./home.css"
 const Navbar =()=>{
  const {loginWithRedirect} =useAuth0();
 return(
-    <div className="navbar_container">
+    <div className="navbar_container container">
     <div className="navbar">
         <div className="logo"><strong className="text-gradient--clr-blue">Enter</strong>Act</div>
         <div className="navbar_buttons"><Button variant="secondary" onClick={()=>{loginWithRedirect()}} >Login</Button></div>
@@ -19,7 +19,7 @@ return(
 const CenterPart=()=>{
   const {loginWithRedirect} =useAuth0();
     return(
-        <div className="center_container">
+        <div className="center_container container">
             <div className="centerpart">
             <h2>
                 <strong className="text-gradient--clr-pink">Meet</strong>,{" "}

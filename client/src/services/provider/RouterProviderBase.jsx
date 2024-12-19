@@ -1,8 +1,8 @@
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import Home from "../../pages/home/Home";
 import Hero from "../../pages/home/Hero";
 import { Navigate } from "react-router-dom";
 import { useAuth0 } from "@auth0/auth0-react";
+import Home from "@/pages/home/Home";
 
 const ProtectedRoute = ({element}) => {
   const { isAuthenticated, isLoading } = useAuth0();
@@ -19,7 +19,7 @@ const ProtectedRoute = ({element}) => {
 const router = createBrowserRouter([
   {
     path: "/onboarding",
-    element: <Home />,
+    element: <Home/>,
   },
   {
     path: "/",

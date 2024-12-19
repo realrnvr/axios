@@ -1,124 +1,110 @@
-.home__header-wrapper {
-  border-bottom: 2px solid var(--clr-border);
+
+
+body {
+    margin: 0;
+    padding: 0;
+    font-family: Poppins,sans-serif;
+    background: radial-gradient(circle at 70% 40%, #000000, #151529, #000000);
+    color: white; 
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    overflow-x: hidden; 
 }
 
-.home__header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding-block: 1rem;
+.navbar{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 80%;
+    border: 1px solid red;
+    padding: 1.25rem;
+    margin-top: 1rem;
+    border-radius: 1rem;
+}
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 80%;
+    padding: 1.25rem;
+    margin-top: 1rem;
+    border-radius: 1rem;
+    background-color: rgba(14, 13, 13, 0.06); 
+    border: 2px solid rgba(255, 255, 255, 0.229); 
+    backdrop-filter: blur(10px); 
+    -webkit-backdrop-filter: blur(10px); 
+}
+.logo{
+    font-weight: 500;
+    font-size: 1.5rem;
+}
+.navbar_container{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.center_container{
+  
+display: flex;
+align-items: center;
+justify-content: center;
+flex-direction: column;
+/* border : 1px solid rgba(255, 255, 255, 0.4); */
+border-radius: 2rem;
+/* margin-top: 3rem; */
+padding-bottom: 2rem;
+margin: 3rem 10rem;
+}
+.centerpart{
+    padding: 5rem 3rem  1rem 3rem;
+    width: 100%;
+}
+.centerpart h2{
+    font-size: 3rem;
+    text-align: center;
+}
+.with h1{
+    font-style: italic;
+    font-weight: 200;
+    font-size: 2rem;
+    margin-bottom: 0.5rem;
+}
+.centerpart_logo h1{
+    font-size: 5rem;
+}
+.centerpart_logo {
+  
+    border-radius: 2rem;
+    padding: 0.5rem 1rem;
+    margin: 1rem 0 0.5rem 0;
+    background-color: black;
+
+}
+.centerpart_logo {
+    border-radius: 2rem;
+    padding: 0.5rem 1rem;
+    margin: 1rem 0 0.5rem 0;
+    background-color: black;
+    position: relative;
+    overflow: hidden;
 }
 
-.home__title {
-  font-size: var(--fs-300);
-  font-weight: var(--fw-500);
+
+.centerpart_logo {
+    border-radius: 2rem;
+    border: 4px solid rgba(255, 255, 255, 0.612);
+    padding: 0.5rem 1rem;
+    margin: 1rem 0 0.5rem 0;
+    background-color: black;
+    position: relative;
+    transition: transform 0.5s ease; 
+    cursor: pointer;
 }
 
-.home__account {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
+.centerpart_logo:hover {
+    transform: scale(1.1); 
 }
 
-/* .home__btn {
-  outline: 0;
-  background-color: var(--clr-secondary);
-  font-size: var(--fs-100);
-  padding: 0.5rem 0.7rem;
-  border-radius: 10px;
-} */
-
-.home__img {
-  width: 25px;
-  aspect-ratio: 1/ 1;
-  filter: invert(100%);
-}
-
-.home__content {
-  margin-top: 5rem;
-  position: relative;
-}
-
-.home__intro > * + * {
-  margin-top: 2rem;
-}
-
-.home__intro-title {
-  font-size: var(--fs-500);
-  font-weight: var(--fw-500);
-  line-height: 1;
-}
-
-.home__description {
-  font-size: var(--fs-200);
-  font-weight: var(--fw-400);
-  max-width: 40ch;
-}
-
-.home__goto {
-  margin-top: 2rem;
-}
-
-.home__hero-img-wrapper {
-  position: relative;
-  place-self: center;
-}
-
-.home__hero-img {
-  filter: invert(100%);
-  width: 450px;
-  height: 350px;
-}
-
-.lg-screen {
-  display: none;
-}
-
-/* Xs */
-/* @media (min-width: 475px) {} */
-
-/* Sm */
-/* @media (min-width: 640px) {} */
-
-/* Md */
-@media (min-width: 768px) {
-  .home__content-wrapper {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-  }
-
-  .lg-screen {
-    display: block;
-  }
-
-  .sm-screen {
-    display: none;
-  }
-}
-
-/* Lg */
-@media (min-width: 1024px) {
-  .home__hero-img {
-    width: 450px;
-    height: 400px;
-  }
-
-  .home__intro-title {
-    font-size: var(--fs-550);
-  }
-}
-
-/* Xl */
-@media (min-width: 1280px) {
-  .home__intro-title {
-    font-size: var(--fs-600);
-  }
-
-  .home__hero-img {
-    width: 550px;
-    height: 500px;
-  }
-}
-
-/* 2Xl */
-/* @media (min-width: 1440px) {} */

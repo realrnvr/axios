@@ -1,6 +1,6 @@
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 
-import Hero from "../../pages/home/Hero";
+import Hero from "../../pages/hero/Hero";
 import Home from "@/pages/home/Home";
 import ProtectedRoute from "../gaurd/ProtectedRoute";
 

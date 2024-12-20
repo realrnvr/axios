@@ -4,7 +4,7 @@ import Hero from "../../pages/hero/Hero";
 import Home from "@/pages/home/Home";
 import ProtectedRoute from "../gaurd/ProtectedRoute";
 import Meet from "@/pages/meet/Meet";
-import VideoProvider from "../stream/StreamVideoProvider";
+import VideoProvider from "../stream/VideoProvider";
 import Call from "@/pages/call/Call";
 
 const router = createBrowserRouter([

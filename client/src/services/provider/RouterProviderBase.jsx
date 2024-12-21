@@ -34,7 +34,11 @@ const router = createBrowserRouter([
   },
   {
     path: "/meeting/:callId",
-    element: <Call />,
+    element: (
+      <VideoProvider>
+        <Call />
+      </VideoProvider>
+    ),
   },
 ]);
 

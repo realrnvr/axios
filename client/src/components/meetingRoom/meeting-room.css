@@ -1,0 +1,7 @@
+.call__participants-list {
+  position: absolute;
+  right: 1%;
+  background-color: var(--clr-secondary);
+  padding: 1rem;
+  border-radius: 10px;
+}

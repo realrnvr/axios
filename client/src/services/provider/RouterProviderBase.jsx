@@ -7,6 +7,7 @@ import Meet from "@/pages/meet/Meet";
 import VideoProvider from "../stream/VideoProvider";
 import Call from "@/pages/call/Call";
 import Chat_Layout from "@/pages/chat/Chat";
+import ChatProvider from "../chat/chatProvider";
 
 const router = createBrowserRouter([
   {
@@ -18,7 +19,7 @@ const router = createBrowserRouter([
     element: <ProtectedRoute element={<Hero />} />,
   },{
     path:"/chat",
-    element:<Chat_Layout/>
+    element:(<ProtectedRoute element={<ChatProvider><Chat_Layout/></ChatProvider>}/>)
   },
   {
     path: "/meet",

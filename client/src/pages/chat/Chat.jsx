@@ -1,5 +1,9 @@
 import { useEffect, useState } from "react";
 import { StreamChat } from "stream-chat";
+import "stream-chat-react/dist/css/v2/index.css";
+import "./chat.css"
+import { useAuth0 } from "@auth0/auth0-react";
+
 import {
   Chat,
   Channel,
@@ -11,10 +15,12 @@ import {
   LoadingIndicator,
   ChannelList
 } from "stream-chat-react";
-import "stream-chat-react/dist/css/v2/index.css";
+
+// MOVE IT TO ENV FILE
 const apiKey = "az7swwjyh7mr";
 
-const user = {
+// TEMP USER
+const tempUser = {
   id: "rushi",
   name: "rushi",
   image:
@@ -22,26 +28,44 @@ const user = {
 };
 
 export default function Chat_Layout() {
+  const { user,isLoading} = useAuth0();
   const [client, setClient] = useState(null);
-  useEffect(() => {
+
+  useEffect(() => {  
     async function init() {
       const chatClient = StreamChat.getInstance(apiKey);
-      await chatClient.connectUser(user, chatClient.devToken(user.id));
+  
+      // const tempUser = {
+      //   id: user?.name || "Guest",
+      //   name: user?.name || "Guest",
+      //   image: user?.picture ||  "https://archive.org/download/whatsapp-smiling-guy-i-accidentally-made/whatsapp%20generic%20person%20dark.jpg" ,
+      // };
+  
+      await chatClient.connectUser(
+        tempUser,
+        chatClient.devToken(tempUser.id)
+      );
+      
       const channel = chatClient.channel("messaging", "testing", {
         image: "",
         name: "messaging-testing",
-        members: [user.id],
+        members: [tempUser.id],
       });
+  
       await channel.watch();
       setClient(chatClient);
     }
+  
     init();
-    if (client) return () => client.disconnectUser();
+  
+    return () => client?.disconnectUser();
   }, []);
+  
   if (!client) return <LoadingIndicator />;
 
   return (
-    <Chat client={client} theme="messaging dark">
+    <div className="window">
+  <Chat client={client} theme="str-chat__theme-dark">
         <ChannelList/>
       <Channel>
         <Window>
@@ -52,5 +76,6 @@ export default function Chat_Layout() {
         <Thread />
       </Channel>
     </Chat>
+    </div>
   );
 }

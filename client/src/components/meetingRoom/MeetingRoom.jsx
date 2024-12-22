@@ -2,10 +2,12 @@ import "./meeting-room.css";
 import { cn } from "@/lib/utils";
 import {
   CallControls,
+  CallingState,
   CallParticipantsList,
   CallStatsButton,
   PaginatedGridLayout,
   SpeakerLayout,
+  useCallStateHooks,
 } from "@stream-io/video-react-sdk";
 import { useState } from "react";
 
@@ -17,10 +19,21 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { LayoutList, Users } from "lucide-react";
+import { useSearchParams } from "react-router-dom";
+import EndCallButton from "../endCallButton/EndCallButton";
 
 const MeetingRoom = () => {
+  const [searchParams] = useSearchParams();
+  const isPersonalRoom = !!searchParams.get("personal");
   const [layout, setLayout] = useState("speaker-left");
   const [showParticipants, setShowParticipants] = useState(false);
+
+  const { useCallCallingState } = useCallStateHooks();
+  const callingState = useCallCallingState();
+
+  if (callingState !== CallingState.JOINED) {
+    return <div>Loading...</div>;
+  }
 
   const CallLayout = () => {
     switch (layout) {
@@ -52,7 +65,7 @@ const MeetingRoom = () => {
           <CallParticipantsList onClose={() => setShowParticipants(false)} />
         </div>
       </div>
-      <div className="fixed bottom-0 flex w-full items-center justify-center gap-5">
+      <div className="fixed bottom-0 flex flex-wrap w-full items-center justify-center gap-5">
         <CallControls />
         <DropdownMenu>
           <div className="flex items-center">
@@ -89,6 +102,7 @@ const MeetingRoom = () => {
             <Users size={20} className="text-white" />
           </div>
         </button>
+        {!isPersonalRoom && <EndCallButton />}
       </div>
     </section>
   );

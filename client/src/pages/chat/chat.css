@@ -1,13 +1,13 @@
-/* .str-chat__channel-list {
-    position: fixed;
-    z-index: 1;
-    height: 100%;
-    width: 0;
-    flex-shrink: 0;
-    box-shadow: 0 0 8px rgba(0, 0, 0, 0.15);
-    &--open {
-      width: 30%;
-      position: fixed;
-    }
-    transition: width 0.3s ease-out;
-  } */
+
+  .chat-sidebar{
+    width:20%;
+    /* border-right: 1px solid gray; */
+  }
+  .chatbox-chat{
+    width: 80%;
+  }
+  .chat-container{
+    display: flex;
+    height: 100vh;
+
+  }

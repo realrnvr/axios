@@ -7,7 +7,7 @@ import { useAuth0 } from "@auth0/auth0-react";
 import { useChat } from "../../services/chat/chatProvider";
 
 export default function Chat_Layout() {
-  const { client } = useChat(); 
+  const  client  = useChat(); 
   const { user, isLoading } = useAuth0();
 
   useEffect(() => {

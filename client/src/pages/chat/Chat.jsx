@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import {
   Chat,
   Channel,
@@ -16,10 +16,14 @@ import { useAuth0 } from "@auth0/auth0-react";
 import { useChat } from "../../services/chat/chatProvider";
 
 import "./chat.css";
+import { ChatDialog } from "@/components/chat/ChatDialog";
 
 const apiKey = "az7swwjyh7mr";
 const options = { presence: true, state: true };
 const sort = { last_message_at: -1 };
+
+
+
 
 export default function Chat_Layout() {
   const { user, isLoading } = useAuth0();
@@ -69,16 +73,7 @@ export default function Chat_Layout() {
     <div className="chat-container">
 <Chat client={client} theme="str-chat__theme-dark">
       <div className="chat-sidebar">
-        {/* <input
-          type="text"
-          placeholder="Enter channel name"
-          value={newChannelName}
-          onChange={(e) => setNewChannelName(e.target.value)}
-          style={{ width: "80%", padding: "5px" }}
-        />
-        <button onClick={createChannel} style={{ padding: "5px" }}>
-          Create
-        </button> */}
+        <ChatDialog  setActiveChannel={setActiveChannel} activeChannel={activeChannel} createChannel={createChannel} newChannelName={newChannelName} setNewChannelName={setNewChannelName}/>
         <ChannelList />
       </div>
       <div className="chatbox-chat">

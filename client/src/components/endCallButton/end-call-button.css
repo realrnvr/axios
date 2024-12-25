@@ -1,4 +1,6 @@
 .call__btn {
   padding: 0.3rem;
   border-radius: 5px;
+  font-size: var(--fs-100);
+  font-weight: var(--fw-300);
 }

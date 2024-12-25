@@ -3,6 +3,7 @@ import { useAuth0 } from "@auth0/auth0-react";
 import { StreamVideo, StreamVideoClient } from "@stream-io/video-react-sdk";
 import axios from "axios";
 import PropTypes from "prop-types";
+import CustomLoader from "@/components/customLoader/CustomLoader";
 
 const apiKey = import.meta.env.VITE_STREAM_API_KEY || "3ua7rmk2epdb";
 
@@ -53,7 +54,7 @@ const VideoProvider = ({ children }) => {
     };
   }, [isLoading, user]);
 
-  if (!client) return <div>Loading...</div>;
+  if (!client && user) return <CustomLoader />;
 
   return <StreamVideo client={client}>{children}</StreamVideo>;
 };

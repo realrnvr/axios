@@ -26,7 +26,7 @@ const EndCallButton = () => {
       }}
       className="bg-red-500 call__btn"
     >
-      End call for everyone
+      Hang up
     </button>
   );
 };

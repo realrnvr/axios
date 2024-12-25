@@ -12,9 +12,9 @@ const Navbar = () => {
           <strong className="text-gradient--clr-blue">Enter</strong>Act
         </div>
         <div className="navbar_buttons">
-        {isAuthenticated && user?.picture && (
+          {isAuthenticated && user?.picture && (
             <img
-              src={user.picture}
+              src={user.picture || "https://via.placeholder.com/150"}
               alt="Profile"
               className="navbar_user_pic"
             />

@@ -9,7 +9,7 @@ import {
   SpeakerLayout,
   useCallStateHooks,
 } from "@stream-io/video-react-sdk";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import {
   DropdownMenu,
@@ -19,8 +19,9 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { LayoutList, Users } from "lucide-react";
-import { useSearchParams } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import EndCallButton from "../endCallButton/EndCallButton";
+import CustomLoader from "../customLoader/CustomLoader";
 
 const MeetingRoom = () => {
   const [searchParams] = useSearchParams();
@@ -30,10 +31,13 @@ const MeetingRoom = () => {
 
   const { useCallCallingState } = useCallStateHooks();
   const callingState = useCallCallingState();
+  const navigate = useNavigate();
 
-  if (callingState !== CallingState.JOINED) {
-    return <div>Loading...</div>;
-  }
+  useEffect(() => {
+    if (callingState === CallingState.LEFT) {
+      navigate("/");
+    }
+  }, [callingState, navigate]);
 
   const CallLayout = () => {
     switch (layout) {
@@ -48,6 +52,13 @@ const MeetingRoom = () => {
       }
     }
   };
+
+  if (
+    callingState !== CallingState.JOINED &&
+    callingState !== CallingState.LEFT
+  ) {
+    return <CustomLoader />;
+  }
 
   return (
     <section className="relative h-screen w-full overflow-hidden pt-4 text-white">

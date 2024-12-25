@@ -11,10 +11,11 @@ import {
   useCreateChatClient,
 } from "stream-chat-react";
 import "stream-chat-react/dist/css/v2/index.css";
-
+import { toast } from "@/hooks/use-toast";
+import CustomLoader from "@/components/customLoader/CustomLoader";
 import { useAuth0 } from "@auth0/auth0-react";
 import { useChat } from "../../services/chat/chatProvider";
-
+import { Sidebar } from "lucide-react";
 import "./chat.css";
 import { ChatDialog } from "@/components/chat/ChatDialog";
 
@@ -23,7 +24,7 @@ const options = { presence: true, state: true };
 const sort = { last_message_at: -1 };
 
 export default function Chat_Layout() {
-  const { user, isLoading } = useAuth0();
+  const { user} = useAuth0();
   const [newChannelName, setNewChannelName] = useState("");
   const [availableChannels, setAvailableChannels] = useState([]);
   const [activeChannel, setActiveChannel] = useState(null);
@@ -64,14 +65,14 @@ export default function Chat_Layout() {
       console.error("Error creating channel:", error);
     }
   };
-  if (!client) return <div>Loading...</div>;
+  if (!client) return <CustomLoader/>;
 
   return (
     <div className="chat-container">
       <Chat client={client} theme="str-chat__theme-dark">
         <div className={`chat-sidebar ${!isOpen ? "closed" : ""}`}>
           <button className="toggle-btn" onClick={() => setIsOpen(!isOpen)}>
-            {isOpen ? "←" : "→"}
+            {<Sidebar/>}
           </button>
           <div className="sidebar_options">
             <ChatDialog

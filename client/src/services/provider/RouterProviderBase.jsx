@@ -1,44 +1,32 @@
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 
-import Hero from "../../pages/hero/Hero";
 import Home from "@/pages/home/Home";
 import ProtectedRoute from "../gaurd/ProtectedRoute";
-import Meet from "@/pages/meet/Meet";
-import VideoProvider from "../stream/VideoProvider";
 import Call from "@/pages/call/Call";
 import Chat_Layout from "@/pages/chat/Chat";
+import CreateMeet from "@/pages/createMeet/CreateMeet";
+import Upcoming from "@/pages/upcoming/Upcoming";
 
 const router = createBrowserRouter([
+  {
+    path: "/",
+    element: <ProtectedRoute element={<CreateMeet />} />,
+  },
   {
     path: "/onboarding",
     element: <Home />,
   },
   {
-    path: "/",
-    element: <ProtectedRoute element={<Hero />} />,
-  },{
-    path:"/chat",
-    element:<Chat_Layout/>
-  },
-  {
-    path: "/meet",
-    element: (
-      <ProtectedRoute
-        element={
-          <VideoProvider>
-            <Meet />
-          </VideoProvider>
-        }
-      />
-    ),
+    path: "/chat",
+    element: <Chat_Layout />,
   },
   {
     path: "/meeting/:callId",
-    element: (
-      <VideoProvider>
-        <Call />
-      </VideoProvider>
-    ),
+    element: <Call />,
+  },
+  {
+    path: "/upcoming",
+    element: <Upcoming />,
   },
 ]);
 

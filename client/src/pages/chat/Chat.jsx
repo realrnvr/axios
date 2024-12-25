@@ -32,7 +32,7 @@ export default function Chat_Layout() {
   const [activeChannel, setActiveChannel] = useState(null);
   const userId = user.sub.replace(/[^a-z0-9@_-]/gi, "_");
   const token = useChat();
-
+  const [isOpen, setIsOpen] = useState(true);
   const client = useCreateChatClient({
     apiKey,
     tokenOrProvider: token,
@@ -72,12 +72,21 @@ export default function Chat_Layout() {
   return (
     <div className="chat-container">
 <Chat client={client} theme="str-chat__theme-dark">
-      <div className="chat-sidebar">
-        <ChatDialog  setActiveChannel={setActiveChannel} activeChannel={activeChannel} createChannel={createChannel} newChannelName={newChannelName} setNewChannelName={setNewChannelName}/>
+      <div className={`chat-sidebar ${!isOpen ? 'closed' : ''}`}>
+      <button 
+          className="toggle-btn" 
+          onClick={() => setIsOpen(!isOpen)}
+        >
+          {isOpen ? '←' : '→'}
+        </button>
+        <div className="sidebar_options">
+        <ChatDialog  setActiveChannel={setActiveChannel} activeChannel={activeChannel} createChannel={createChannel} newChannelName={newChannelName} setNewChannelName={setNewChannelName} />
+        </div>
+        <div className="sidebar-channelList">
         <ChannelList />
+        </div>
       </div>
       <div className="chatbox-chat">
-
       <Channel channel={activeChannel}>
         <Window>
           <ChannelHeader />
@@ -89,6 +98,5 @@ export default function Chat_Layout() {
       </div>
     </Chat>
     </div>
-    
   );
 }

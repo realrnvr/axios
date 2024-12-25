@@ -1,14 +1,160 @@
+.chat-container {
+  display: flex;
+  height: 100vh;
+}
 
-  .chat-sidebar{
-    width:20%;
-  }
-  .chatbox-chat{
+.chat-sidebar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  background-color: #1a1a1a;
+  transition: transform 0.3s ease-in-out;
+  color: white;
+}
+
+.chatbox-chat {
+  height: 100vh;
+  overflow: hidden;
+  position: fixed;
+}
+
+.sidebar_options{
+position: fixed;
+bottom: 10px;
+z-index: 99;
+
+}
+.sidebar-channelList{
+height: 100vh;
+}
+
+
+@media screen and (max-width: 768px) {
+  .chat-sidebar {
     width: 80%;
-   overflow: hidden;
-  }
-  .chat-container{
-    display: flex;
-  
     height: 100vh;
-
+    z-index: 1000;
+    font-size: 1rem;
   }
+  
+  .chat-sidebar.closed {
+    transform: translateX(-100%);
+  }
+  
+  .chatbox-chat {
+    width: 100%;
+    left: 0;
+  }
+  
+  .toggle-btn {
+    position: absolute;
+    right: -40px;
+    top: 70px;
+    background: #02aed4d5;
+    border-radius: 10px;
+    border: none;
+    padding: 10px;
+    color: white;
+    cursor: pointer;
+    z-index: 1000;
+  }
+} 
+
+
+
+/* Xs */
+@media (max-width: 475px) {
+  .chat-sidebar {
+    width: 80%;
+    height: 100vh;
+    z-index: 1000;
+    font-size: 1rem;
+  }
+  
+  .chat-sidebar.closed {
+    transform: translateX(-100%);
+  }
+  
+  .chatbox-chat {
+    width: 100%;
+    left: 0;
+  }
+  
+  .toggle-btn {
+    position: absolute;
+    right: -40px;
+    top: 70px;
+    background: #02aed4d5;
+    border-radius: 10px;
+    border: none;
+    padding: 10px;
+    color: white;
+    cursor: pointer;
+    z-index: 1000;
+  } 
+}
+
+/* Sm */
+@media (max-width: 640px) {
+  .chat-sidebar {
+    width: 80%;
+    height: 100vh;
+    z-index: 1000;
+    font-size: 1rem;
+  }
+  
+  .chat-sidebar.closed {
+    transform: translateX(-100%);
+  }
+  
+  .chatbox-chat {
+    width: 100%;
+    left: 0;
+  }
+  
+  .toggle-btn {
+    position: absolute;
+    right: -40px;
+    top: 70px;
+    background: #02aed4d5;
+    border-radius: 10px;
+    border: none;
+    padding: 10px;
+    color: white;
+    cursor: pointer;
+    z-index: 1000;
+  }  
+}
+
+/* Md */
+@media (min-width: 768px) {
+  .chat-sidebar {
+    width: 20%;
+    height: 100vh;
+    transform: none !important; 
+  }
+  
+  .chatbox-chat {
+    width: 80%;
+    left: 20%;
+  }
+  
+  .toggle-btn {
+    display: none; 
+  } 
+}
+
+/* Lg */
+/* @media (max-width: 1024px) {
+} */
+
+/* Xl */
+@media (max-width: 1280px) {
+  .sidebar-channelList{
+    font-size: 0.9rem;
+  }
+  
+}
+
+/* 2Xl */
+/* @media (min-width: 1440px) {} */

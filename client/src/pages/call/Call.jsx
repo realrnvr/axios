@@ -1,3 +1,4 @@
+import CustomLoader from "@/components/customLoader/CustomLoader";
 import MeetingRoom from "@/components/meetingRoom/MeetingRoom";
 import MeetingSetup from "@/components/meetingSetup/MeetingSetup";
 import { useGetCallById } from "@/hooks/useGetCallByid";
@@ -14,7 +15,8 @@ const Call = () => {
 
   const { call, isCallLoading } = useGetCallById(callId);
 
-  if (isLoading || isCallLoading) return <div>Loading...</div>;
+  if (isLoading || isCallLoading) return <CustomLoader />;
+  console.log(isCallLoading);
 
   return (
     <main className="h-screen w-full">

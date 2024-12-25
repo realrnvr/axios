@@ -22,9 +22,6 @@ const apiKey = "az7swwjyh7mr";
 const options = { presence: true, state: true };
 const sort = { last_message_at: -1 };
 
-
-
-
 export default function Chat_Layout() {
   const { user, isLoading } = useAuth0();
   const [newChannelName, setNewChannelName] = useState("");
@@ -71,32 +68,37 @@ export default function Chat_Layout() {
 
   return (
     <div className="chat-container">
-<Chat client={client} theme="str-chat__theme-dark">
-      <div className={`chat-sidebar ${!isOpen ? 'closed' : ''}`}>
-      <button 
-          className="toggle-btn" 
-          onClick={() => setIsOpen(!isOpen)}
-        >
-          {isOpen ? '←' : '→'}
-        </button>
-        <div className="sidebar_options">
-        <ChatDialog  setActiveChannel={setActiveChannel} activeChannel={activeChannel} createChannel={createChannel} newChannelName={newChannelName} setNewChannelName={setNewChannelName} />
+      <Chat client={client} theme="str-chat__theme-dark">
+        <div className={`chat-sidebar ${!isOpen ? "closed" : ""}`}>
+          <button className="toggle-btn" onClick={() => setIsOpen(!isOpen)}>
+            {isOpen ? "←" : "→"}
+          </button>
+          <div className="sidebar_options">
+            <ChatDialog
+              setActiveChannel={setActiveChannel}
+              activeChannel={activeChannel}
+              createChannel={createChannel}
+              newChannelName={newChannelName}
+              setNewChannelName={setNewChannelName}
+              setIsOpen={setIsOpen}
+              isOpen={isOpen}
+            />
+          </div>
+          <div className="sidebar-channelList">
+            <ChannelList />
+          </div>
         </div>
-        <div className="sidebar-channelList">
-        <ChannelList />
+        <div className="chatbox-chat">
+          <Channel channel={activeChannel}>
+            <Window>
+              <ChannelHeader />
+              <MessageList />
+              <MessageInput audioRecordingEnabled />
+            </Window>
+            <Thread />
+          </Channel>
         </div>
-      </div>
-      <div className="chatbox-chat">
-      <Channel channel={activeChannel}>
-        <Window>
-          <ChannelHeader />
-          <MessageList />
-          <MessageInput />
-        </Window>
-        <Thread />
-      </Channel>
-      </div>
-    </Chat>
+      </Chat>
     </div>
   );
 }

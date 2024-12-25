@@ -1,5 +1,4 @@
-
-import { Button } from "@/components/ui/button"
+import { Button } from "@/components/ui/button";
 import {
   Dialog,
   DialogContent,
@@ -8,23 +7,32 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "@/components/ui/dialog"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
+} from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 import { useState } from "react";
 
-export function ChatDialog({setActiveChannel,activeChannel,createChannel,newChannelName,setNewChannelName}) {
-  
+export function ChatDialog({
+  setActiveChannel,
+  activeChannel,
+  createChannel,
+  newChannelName,
+  setNewChannelName,
+  setIsOpen,
+}) {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button variant="outline">Create Channel</Button>
+        <Button variant="outline" onClick={(prev) => setIsOpen(!prev)}>
+          Create Channel
+        </Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
           <DialogTitle>Create a new Active channel</DialogTitle>
           <DialogDescription>
-         Channel created here will be visible to everyone, and everyone will have an access to join the channel.
+            Channel created here will be visible to everyone, and everyone will
+            have an access to join the channel.
           </DialogDescription>
         </DialogHeader>
         <div className="grid gap-4 py-4">
@@ -32,13 +40,20 @@ export function ChatDialog({setActiveChannel,activeChannel,createChannel,newChan
             <Label htmlFor="Name" className="text-right">
               Channel name:
             </Label>
-            <Input id="name"className="col-span-3" value={newChannelName}  onChange={(e) => setNewChannelName(e.target.value)} />
+            <Input
+              id="name"
+              className="col-span-3"
+              value={newChannelName}
+              onChange={(e) => setNewChannelName(e.target.value)}
+            />
           </div>
         </div>
         <DialogFooter>
-          <Button variant="outline" onClick={createChannel}>Create</Button>
+          <Button variant="outline" onClick={createChannel}>
+            Create
+          </Button>
         </DialogFooter>
       </DialogContent>
     </Dialog>
-  )
+  );
 }

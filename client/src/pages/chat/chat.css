@@ -29,7 +29,7 @@ height: 100vh;
 }
 
 
-@media screen and (max-width: 768px) {
+@media screen and (max-width: 1024px) {
   .chat-sidebar {
     width: 80%;
     height: 100vh;
@@ -58,6 +58,7 @@ height: 100vh;
     cursor: pointer;
     z-index: 1000;
   }
+ 
 } 
 
 
@@ -92,6 +93,7 @@ height: 100vh;
     cursor: pointer;
     z-index: 1000;
   } 
+
 }
 
 /* Sm */
@@ -127,7 +129,7 @@ height: 100vh;
 }
 
 /* Md */
-@media (min-width: 768px) {
+@media (min-width: 1024px) {
   .chat-sidebar {
     width: 20%;
     height: 100vh;
@@ -144,17 +146,9 @@ height: 100vh;
   } 
 }
 
-/* Lg */
-/* @media (max-width: 1024px) {
-} */
-
-/* Xl */
 @media (max-width: 1280px) {
   .sidebar-channelList{
     font-size: 0.9rem;
   }
   
 }
-
-/* 2Xl */
-/* @media (min-width: 1440px) {} */

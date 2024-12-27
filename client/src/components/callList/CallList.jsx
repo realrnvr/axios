@@ -44,9 +44,8 @@ const CallList = ({ type }) => {
     }
   };
 
-  const calls = getCalls();
-
-  const NoCallsMessage = getNoCallsMessage();
+  const calls = getCalls(pathname);
+  const NoCallsMessage = getNoCallsMessage(pathname);
 
   return (
     <div>

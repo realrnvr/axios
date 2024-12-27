@@ -5,11 +5,11 @@ import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";
 import { Button } from "@/components/ui/button";
+import { useGetCalls } from "@/hooks/useGetCalls";
 import CreateButton from "@/components/createButton/CreateButton";
 import CustomLoader from "@/components/customLoader/CustomLoader";
 import Navbar from "@/components/navbar/Navbar";
 import ReactDatePicker from "react-datepicker";
-import { useGetCalls } from "@/hooks/useGetCalls";
 
 const CreateMeet = () => {
   const [isClientReady, setIsClientReady] = useState(false); // Track client readiness
@@ -36,10 +36,9 @@ const CreateMeet = () => {
     });
   };
 
-  // Wait until the client is ready
   useEffect(() => {
     if (!isLoading && client) {
-      setIsClientReady(true); // Mark client as ready when available
+      setIsClientReady(true);
     }
   }, [client, isLoading]);
 
@@ -57,18 +56,18 @@ const CreateMeet = () => {
         return;
       }
 
-      const callId = crypto.randomUUID(); // Generate random call ID
-      const call = client.call("default", callId); // Create a call instance
+      const callId = crypto.randomUUID();
+      const call = client.call("default", callId);
 
       if (!call) {
         throw new Error("Failed to create call");
       }
 
-      const startsAt =
-        values.dateTime.toISOString() || new Date(Date.now()).toISOString();
+      const startsAt = values.dateTime.toISOString();
       const description = values.description || "Instant meeting";
 
-      // Create the call with metadata
+      const isFutureMeeting = values.dateTime > new Date();
+
       await call.getOrCreate({
         data: {
           starts_at: startsAt,
@@ -76,11 +75,15 @@ const CreateMeet = () => {
         },
       });
 
-      setCallDetails(call); // Store call details if needed later
-      if (!values.description) {
-        navigate(`/meeting/${call.id}`); // Redirect to meeting
+      setCallDetails(call);
+
+      if (isFutureMeeting) {
+        setIsSchedule(true);
+        toast({ title: "Meeting scheduled successfully!" });
+      } else {
+        toast({ title: "Meeting started" });
+        navigate(`/meeting/${call.id}`);
       }
-      toast({ title: "Meeting created" });
     } catch (error) {
       console.log(error);
       toast({

@@ -40,18 +40,25 @@ export const useGetCalls = () => {
   }, [client, user]);
 
   const now = new Date().toISOString();
-  console.log(calls);
+
+  console.log("Fetched Calls:", calls);
 
   const endedCalls = calls.filter(({ state }) => {
-    const startsAt = state?.startsAt;
-    const endedAt = state?.endedAt;
-    return (startsAt && new Date(startsAt) < now) || !!endedAt;
+    const startsAt = state?.startsAt ? new Date(state.startsAt) : null;
+    const endedAt = state?.endedAt ? new Date(state.endedAt) : null;
+
+    return (startsAt && startsAt < now) || (endedAt && endedAt < now);
   });
 
   const upcomingCalls = calls.filter(({ state }) => {
-    const startsAt = state?.startsAt;
-    return startsAt && new Date(startsAt) > now;
+    const startsAt = state?.startsAt
+      ? new Date(state.startsAt).toISOString()
+      : null;
+
+    return startsAt && startsAt > now;
   });
+  console.log("Upcoming Calls:", upcomingCalls);
+  console.log("Ended Calls:", endedCalls);
 
   return { endedCalls, upcomingCalls, callRecordings: calls, isLoading };
 };

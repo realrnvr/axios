@@ -12,7 +12,7 @@ import {
     Thread
 } from 'stream-chat-react';
 import "stream-chat-react/dist/css/v2/index.css";
-import { MessageCircle, User } from "lucide-react";
+import { MessageCircle } from "lucide-react";
 import { useAuth0 } from "@auth0/auth0-react";
 import { useChat } from "../../services/chat/ChatProvider";
 import { toast } from "@/hooks/use-toast";
@@ -29,57 +29,75 @@ const ChatMeet = ({ meetingId }) => {
     const { user } = useAuth0();
     const chatToken = useChat();
     const [channel, setChannel] = useState(null);
-    const [loading, setLoading] = useState(false);
+    const [loading, setLoading] = useState(true); 
+    const [isClientReady, setIsClientReady] = useState(false);
     const userId = user?.sub?.replace(/[^a-z0-9@_-]/gi, "_");
 
     useEffect(() => {
         const initializeChat = async () => {
-            if (!userId || !chatToken) return;
-
+            if (!userId || !chatToken) {
+                console.error("User ID or chat token missing:", { userId, chatToken });
+                setLoading(false); 
+                return;
+            }
+    
             try {
+                console.log("Connecting user with token:", chatToken);
+    
                 await chatClient.connectUser(
                     {
                         id: userId,
                         name: user?.name || userId,
-                        image: user?.picture
+                        image: user?.picture,
                     },
                     chatToken
                 );
-            console.log(chatToken);
-                const channel = chatClient.channel('meeting', `meeting-${meetingId}`, {
-                    name: `Meeting Room ${meetingId}`,
-                    members: [userId]
+    
+                console.log("User connected:", userId);
+    
+               
+                const channelId = `${meetingId.toLowerCase().replace(/\s/g, '-')}`;
+                const channel = chatClient.channel("messaging", channelId, {
+                    name: `Meeting: ${meetingId}`,
+                    members: [userId],
                 });
-                await channel.create();
-                await channel.addMembers([userId]);
-                await channel.watch();
-                setChannel(channel);
-                setLoading(false);
+    
+                await channel.watch(); 
+                setChannel(channel); 
             } catch (error) {
                 toast({
                     title: "Chat Error",
                     description: "Failed to initialize chat. Please try again.",
-                    variant: "destructive"
+                    variant: "destructive",
                 });
-                console.error('Error initializing chat:', error);
+                console.error("Error initializing chat:", error);
+            } finally {
+                setLoading(false); 
             }
         };
-
-        initializeChat();
-
+    
+        if (chatToken && userId && !isClientReady) {
+            initializeChat();
+        }
+    
         return () => {
-            chatClient.disconnectUser();
+            if (isClientReady) {
+                chatClient.disconnectUser();
+                setIsClientReady(false);
+            }
         };
-    }, [userId, chatToken, meetingId,user.name,user.picture]);
+    }, [chatToken, userId, meetingId, user?.name, user?.picture, isClientReady]);
+    
+    
 
     if (loading) {
-        return <CustomLoader />;
+        return <CustomLoader />; 
     }
 
     return (
         <div className="h-full flex flex-col bg-black">
             {channel ? (
-                <Chat client={chatClient}  theme="str-chat__theme-dark">
+                <Chat client={chatClient} theme="str-chat__theme-dark">
                     <Channel channel={channel}>
                         <Window>
                             <div className="p-2 border-b flex items-center gap-2">

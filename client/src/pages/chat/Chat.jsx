@@ -46,6 +46,7 @@ export default function ChatLayout() {
           },
           token
         );
+        console.log(token);
 
         setClientReady(true);
       } catch (error) {

@@ -35,6 +35,7 @@ const MeetingRoom = () => {
   const callingState = useCallCallingState();
   const navigate = useNavigate();
   const meetingId = searchParams.get("id") || "general";
+  console.log(meetingId,"meeting id");
   useEffect(() => {
     if (callingState === CallingState.LEFT) {
       navigate("/");

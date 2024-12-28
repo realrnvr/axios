@@ -8,8 +8,9 @@ import {
   MessageList,
   MessageInput,
   Thread,
-  useCreateChatClient,
+  useChannelStateContext,
 } from "stream-chat-react";
+import { StreamChat } from 'stream-chat';
 import "stream-chat-react/dist/css/v2/index.css";
 import { toast } from "@/hooks/use-toast";
 import CustomLoader from "@/components/customLoader/CustomLoader";
@@ -18,66 +19,137 @@ import { useChat } from "../../services/chat/chatProvider";
 import { Sidebar } from "lucide-react";
 import "./chat.css";
 import { ChatDialog } from "@/components/chat/ChatDialog";
+import { Button } from "@/components/ui/button";
 
 const apiKey = "az7swwjyh7mr";
-const options = { presence: true, state: true };
-const sort = { last_message_at: -1 };
+const chatClient = StreamChat.getInstance(apiKey);
 
-export default function Chat_Layout() {
-  const { user} = useAuth0();
+export default function ChatLayout() {
+  const { user, isLoading: isAuthLoading } = useAuth0();
   const [newChannelName, setNewChannelName] = useState("");
-  const [availableChannels, setAvailableChannels] = useState([]);
-  const [activeChannel, setActiveChannel] = useState(null);
-  const userId = user.sub.replace(/[^a-z0-9@_-]/gi, "_");
-  const token = useChat();
+  const [clientReady, setClientReady] = useState(false);
   const [isOpen, setIsOpen] = useState(true);
-  const client = useCreateChatClient({
-    apiKey,
-    tokenOrProvider: token,
-    userData: { id: userId },
-  });
-
-  const filters = { type: "messaging" };
+  const token = useChat();
+  
+  const userId = user?.sub?.replace(/[^a-z0-9@_-]/gi, "_");
 
   useEffect(() => {
-    const fetchChannels = async () => {
+    const initChat = async () => {
       try {
-        const channels = await client.queryChannels(filters, sort, options);
-        setAvailableChannels(channels);
+        if (!userId || !token) return;
+
+        await chatClient.connectUser(
+          {
+            id: userId,
+            name: user?.name || userId,
+            image: user?.picture,
+          },
+          token
+        );
+
+        setClientReady(true);
       } catch (error) {
-        console.error("Error fetching channels:", error);
+        console.error("Error connecting user:", error);
+        toast({
+          title: "Failed to connect to chat",
+          description: error.message,
+          variant: "destructive",
+        });
       }
     };
-    if (client) fetchChannels();
-  }, [client]);
+
+    if (token && userId && !clientReady) {
+      initChat();
+    }
+
+    return () => {
+      if (clientReady) {
+        chatClient.disconnectUser();
+        setClientReady(false);
+      }
+    };
+  }, [token, userId, user, clientReady]);
 
   const createChannel = async () => {
-    if (!newChannelName.trim()) return alert("Channel name cannot be empty");
+    if (!newChannelName.trim()) {
+      toast({
+        title: "Invalid channel name",
+        description: "Channel name cannot be empty",
+        variant: "destructive",
+      });
+      return;
+    }
+
     try {
-      const channel = client.channel("messaging", newChannelName, {
+      const channelId = `${newChannelName.toLowerCase().replace(/\s/g, '-')}-${Date.now()}`;
+      const channel = chatClient.channel("messaging", channelId, {
         name: newChannelName,
+        created_by_id: userId,
         members: [userId],
       });
+
       await channel.create();
+      await channel.addMembers([userId]);
+      
       setNewChannelName("");
-      setActiveChannel(channel);
+      
+      toast({
+        title: "Channel created",
+        description: `${newChannelName} has been created successfully`,
+      });
     } catch (error) {
       console.error("Error creating channel:", error);
+      toast({
+        title: "Failed to create channel",
+        description: error.message,
+        variant: "destructive",
+      });
     }
   };
-  if (!client) return <CustomLoader/>;
+
+  const deleteChannel = async () => {
+    try {
+      const channel = chatClient.activeChannel;
+      if (!channel) {
+        toast({
+          title: "No channel selected",
+          description: "Please select a channel to delete",
+          variant: "destructive",
+        });
+        return;
+      }
+
+      await channel.delete();
+      
+      toast({
+        title: "Channel deleted",
+        description: "Channel has been deleted successfully",
+      });
+    } catch (error) {
+      console.error("Error deleting channel:", error);
+      toast({
+        title: "Failed to delete channel",
+        description: error.message,
+        variant: "destructive",
+      });
+    }
+  };
+
+  if (isAuthLoading || !clientReady || !token) return <CustomLoader />;
 
   return (
     <div className="chat-container">
-      <Chat client={client} theme="str-chat__theme-dark">
+      <Chat client={chatClient} theme="str-chat__theme-dark">
         <div className={`chat-sidebar ${!isOpen ? "closed" : ""}`}>
-          <button className="toggle-btn" onClick={() => setIsOpen(!isOpen)}>
-            {<Sidebar/>}
+          <button 
+            className="toggle-btn" 
+            onClick={() => setIsOpen(!isOpen)}
+            aria-label={isOpen ? "Close sidebar" : "Open sidebar"}
+          >
+            <Sidebar />
           </button>
           <div className="sidebar_options">
             <ChatDialog
-              setActiveChannel={setActiveChannel}
-              activeChannel={activeChannel}
               createChannel={createChannel}
               newChannelName={newChannelName}
               setNewChannelName={setNewChannelName}
@@ -86,15 +158,23 @@ export default function Chat_Layout() {
             />
           </div>
           <div className="sidebar-channelList">
-            <ChannelList />
+            <ChannelList 
+              filters={{
+                type: 'messaging',
+                members: { $in: [userId] }
+              }}
+              sort={{ last_message_at: -1 }}
+              showChannelSearch
+            />
           </div>
         </div>
         <div className="chatbox-chat">
-          <Channel channel={activeChannel}>
+          <Channel>
             <Window>
               <ChannelHeader />
+           <Button variant="destructive" onClick={deleteChannel}>Delete</Button>
               <MessageList />
-              <MessageInput audioRecordingEnabled />
+              <MessageInput focus audioRecordingEnabled />
             </Window>
             <Thread />
           </Channel>

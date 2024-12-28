@@ -109,7 +109,7 @@ export default function ChatLayout() {
 
   const deleteChannel = async () => {
     try {
-      const channel = chatClient.activeChannel;
+      const channel = chatClient.activeChannels;
       if (!channel) {
         toast({
           title: "No channel selected",
@@ -159,10 +159,6 @@ export default function ChatLayout() {
           </div>
           <div className="sidebar-channelList">
             <ChannelList 
-              filters={{
-                type: 'messaging',
-                members: { $in: [userId] }
-              }}
               sort={{ last_message_at: -1 }}
               showChannelSearch
             />

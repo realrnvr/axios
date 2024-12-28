@@ -12,7 +12,7 @@ import {
     Thread
 } from 'stream-chat-react';
 import "stream-chat-react/dist/css/v2/index.css";
-import { LayoutList, Users, MessageCircle } from "lucide-react";
+import { MessageCircle, User } from "lucide-react";
 import { useAuth0 } from "@auth0/auth0-react";
 import { useChat } from "../../services/chat/ChatProvider";
 import { toast } from "@/hooks/use-toast";
@@ -29,7 +29,7 @@ const ChatMeet = ({ meetingId }) => {
     const { user } = useAuth0();
     const chatToken = useChat();
     const [channel, setChannel] = useState(null);
-    const [loading, setLoading] = useState(true);
+    const [loading, setLoading] = useState(false);
     const userId = user?.sub?.replace(/[^a-z0-9@_-]/gi, "_");
 
     useEffect(() => {
@@ -40,17 +40,18 @@ const ChatMeet = ({ meetingId }) => {
                 await chatClient.connectUser(
                     {
                         id: userId,
-                        name: user.name,
-                        image: user.picture
+                        name: user?.name || userId,
+                        image: user?.picture
                     },
                     chatToken
                 );
-
+            console.log(chatToken);
                 const channel = chatClient.channel('meeting', `meeting-${meetingId}`, {
                     name: `Meeting Room ${meetingId}`,
                     members: [userId]
                 });
-
+                await channel.create();
+                await channel.addMembers([userId]);
                 await channel.watch();
                 setChannel(channel);
                 setLoading(false);
@@ -69,16 +70,16 @@ const ChatMeet = ({ meetingId }) => {
         return () => {
             chatClient.disconnectUser();
         };
-    }, [userId, chatToken, meetingId]);
+    }, [userId, chatToken, meetingId,user.name,user.picture]);
 
     if (loading) {
         return <CustomLoader />;
     }
 
     return (
-        <div className="h-full flex flex-col bg-white">
+        <div className="h-full flex flex-col bg-black">
             {channel ? (
-                <Chat client={chatClient} theme="messaging light">
+                <Chat client={chatClient}  theme="str-chat__theme-dark">
                     <Channel channel={channel}>
                         <Window>
                             <div className="p-2 border-b flex items-center gap-2">

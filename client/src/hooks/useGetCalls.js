@@ -41,11 +41,13 @@ export const useGetCalls = () => {
 
   const now = new Date().toISOString();
 
-  console.log("Fetched Calls:", calls);
-
   const endedCalls = calls.filter(({ state }) => {
-    const startsAt = state?.startsAt ? new Date(state.startsAt) : null;
-    const endedAt = state?.endedAt ? new Date(state.endedAt) : null;
+    const startsAt = state?.startsAt
+      ? new Date(state.startsAt).toISOString()
+      : null;
+    const endedAt = state?.endedAt
+      ? new Date(state.endedAt).toISOString()
+      : null;
 
     return (startsAt && startsAt < now) || (endedAt && endedAt < now);
   });
@@ -57,8 +59,23 @@ export const useGetCalls = () => {
 
     return startsAt && startsAt > now;
   });
-  console.log("Upcoming Calls:", upcomingCalls);
-  console.log("Ended Calls:", endedCalls);
+
+  // useEffect(() => {
+  //   const getRecord = async () => {
+  //     try {
+  //       const responses = [];
+  //       for (const meeting of calls) {
+  //         const response = await meeting.queryRecordings(); // Wait for each request
+  //         responses.push(response);
+  //       }
+  //       console.log(responses);
+  //     } catch (error) {
+  //       console.error("Error fetching recordings:", error);
+  //     }
+  //   };
+
+  //   getRecord();
+  // }, [calls]);
 
   return { endedCalls, upcomingCalls, callRecordings: calls, isLoading };
 };

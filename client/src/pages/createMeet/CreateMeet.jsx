@@ -5,7 +5,6 @@ import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";
 import { Button } from "@/components/ui/button";
-import { useGetCalls } from "@/hooks/useGetCalls";
 import CreateButton from "@/components/createButton/CreateButton";
 import CustomLoader from "@/components/customLoader/CustomLoader";
 import Navbar from "@/components/navbar/Navbar";
@@ -41,8 +40,6 @@ const CreateMeet = () => {
       setIsClientReady(true);
     }
   }, [client, isLoading]);
-
-  useGetCalls();
 
   const createMeeting = async () => {
     if (!isClientReady || !user) {

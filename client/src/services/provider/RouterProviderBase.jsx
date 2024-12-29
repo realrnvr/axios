@@ -6,6 +6,7 @@ import Call from "@/pages/call/Call";
 import Chat_Layout from "@/pages/chat/Chat";
 import CreateMeet from "@/pages/createMeet/CreateMeet";
 import Upcoming from "@/pages/upcoming/Upcoming";
+import TaskPlanner from "@/components/features/TaskPlanner";
 
 const router = createBrowserRouter([
   {
@@ -27,6 +28,10 @@ const router = createBrowserRouter([
   {
     path: "/upcoming",
     element: <Upcoming />,
+  },
+  {
+    path: "/taskplanner",
+    element: <TaskPlanner/>,
   },
 ]);
 

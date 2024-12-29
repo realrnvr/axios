@@ -41,7 +41,7 @@
   background-clip: text;
   -webkit-text-fill-color: transparent;
 }
-
+/* 
 .shadow {
   background: hsl(var(--primary) / 0%);
   position: absolute;
@@ -54,7 +54,7 @@
   border-radius: 24px;
   filter: blur(150px);
   animation: shadow-slide infinite 4s linear alternate;
-}
+} */
 
 @keyframes shadow-slide {
   from {

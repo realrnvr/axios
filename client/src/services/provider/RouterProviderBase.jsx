@@ -7,6 +7,9 @@ import Chat_Layout from "@/pages/chat/Chat";
 import CreateMeet from "@/pages/createMeet/CreateMeet";
 import Upcoming from "@/pages/upcoming/Upcoming";
 import TaskPlanner from "@/components/features/TaskPlanner";
+import Recording from "@/pages/recording/Recording";
+import Ended from "@/pages/ended/Ended";
+import Recordings from "@/pages/recordings/Recordings";
 
 const router = createBrowserRouter([
   {
@@ -30,8 +33,20 @@ const router = createBrowserRouter([
     element: <Upcoming />,
   },
   {
+    path: "/ended",
+    element: <Ended />,
+  },
+  {
+    path: "/recordings",
+    element: <Recordings />,
+  },
+  {
+    path: "/:recUrl",
+    element: <Recording />,
+  },
+  {
     path: "/taskplanner",
-    element: <TaskPlanner/>,
+    element: <TaskPlanner />,
   },
 ]);
 

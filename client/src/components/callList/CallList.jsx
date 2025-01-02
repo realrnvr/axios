@@ -1,21 +1,15 @@
 import "./call-list.css";
 import { useGetCalls } from "@/hooks/useGetCalls";
 import PropTypes from "prop-types";
-import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import CustomLoader from "../customLoader/CustomLoader";
 import { Button } from "../ui/button";
 import { toast } from "@/hooks/use-toast";
-// import MeetingCard from "../meetingCard/MeetingCard";
 
 const CallList = ({ type }) => {
-  const { endedCalls, upcomingCalls, callRecordings, isLoading } =
-    useGetCalls();
-
-  console.log(callRecordings);
+  const { endedCalls, upcomingCalls, isLoading } = useGetCalls();
 
   const navigate = useNavigate();
-  const [recordings, setRecordings] = useState();
 
   // select data based on 'type'
   const getCalls = () => {
@@ -23,8 +17,6 @@ const CallList = ({ type }) => {
       case "ended":
         return endedCalls;
       case "recordings":
-        return recordings;
-      case "upcoming":
         return upcomingCalls;
       default:
         return [];
@@ -58,12 +50,12 @@ const CallList = ({ type }) => {
         calls.map((meeting, idx) => {
           return (
             <div key={idx} className="meeting__card">
-              <p>id: {meeting.id}</p>
-              <p>title: {meeting.state.custom.description || "----"}</p>
+              <p>id: {meeting?.id}</p>
+              <p>title: {meeting?.state?.custom?.description || "----"}</p>
               <p>
                 date:{" "}
-                {new Date(meeting.state.startsAt).toLocaleString() ||
-                  new Date(meeting.start_time).toLocaleString()}
+                {new Date(meeting?.state?.startsAt).toLocaleString() ||
+                  new Date(meeting?.start_time).toLocaleString()}
               </p>
               <div>
                 {type !== "ended" && (
@@ -71,7 +63,7 @@ const CallList = ({ type }) => {
                     variant="secondary"
                     onClick={() => {
                       navigator.clipboard.writeText(
-                        `http://localhost:5173/meeting/${meeting.id}`
+                        `http://localhost:5173/meeting/${meeting?.id}`
                       );
                       toast({ title: "copied!" });
                     }}
@@ -85,24 +77,24 @@ const CallList = ({ type }) => {
                 {type === "recordings" ? (
                   <Button
                     variant="secondary"
-                    onClick={() => navigate(`/${meeting.url}`)}
+                    onClick={() => navigate(`/${meeting?.url}`)}
                   >
                     Play
                   </Button>
                 ) : type === "ended" ? null : (
                   <Button
                     variant="secondary"
-                    onClick={() => navigate(`/meeting/${meeting.id}`)}
+                    onClick={() => navigate(`/meeting/${meeting?.id}`)}
                   >
                     Start
                   </Button>
                 )}
                 <p>
                   {type === "recordings"
-                    ? meeting.url
+                    ? meeting?.url
                     : type === "ended"
                     ? null
-                    : `http://localhost:5173/meeting/${meeting.id}`}
+                    : `http://localhost:5173/meeting/${meeting?.id}`}
                 </p>
               </div>
             </div>

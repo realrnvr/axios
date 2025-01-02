@@ -3,8 +3,7 @@ import "./utils.css";
 import "./index.css";
 import "@stream-io/video-react-sdk/dist/css/styles.css";
 import "react-datepicker/dist/react-datepicker.css";
-import ChatProvider from "./services/chat/ChatProvider"
-
+import ChatProvider from "./services/chat/ChatProvider";
 
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
@@ -18,8 +17,8 @@ createRoot(document.getElementById("root")).render(
     <Auth0ProviderBase>
       <VideoProvider>
         <ChatProvider>
-        <RouterProviderBase />
-        <Toaster />
+          <RouterProviderBase />
+          <Toaster />
         </ChatProvider>
       </VideoProvider>
     </Auth0ProviderBase>

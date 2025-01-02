@@ -1,6 +1,6 @@
 import { useAuth0 } from "@auth0/auth0-react";
 import { useStreamVideoClient } from "@stream-io/video-react-sdk";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 
 export const useGetCalls = () => {
   const [calls, setCalls] = useState([]);
@@ -41,41 +41,32 @@ export const useGetCalls = () => {
 
   const now = new Date().toISOString();
 
-  const endedCalls = calls.filter(({ state }) => {
-    const startsAt = state?.startsAt
-      ? new Date(state.startsAt).toISOString()
-      : null;
-    const endedAt = state?.endedAt
-      ? new Date(state.endedAt).toISOString()
-      : null;
+  const endedCalls = useCallback(
+    () =>
+      calls.filter(({ state }) => {
+        const startsAt = state?.startsAt
+          ? new Date(state.startsAt).toISOString()
+          : null;
+        const endedAt = state?.endedAt
+          ? new Date(state.endedAt).toISOString()
+          : null;
 
-    return (startsAt && startsAt < now) || (endedAt && endedAt < now);
-  });
+        return (startsAt && startsAt < now) || (endedAt && endedAt < now);
+      }),
+    [calls, now]
+  );
 
-  const upcomingCalls = calls.filter(({ state }) => {
-    const startsAt = state?.startsAt
-      ? new Date(state.startsAt).toISOString()
-      : null;
+  const upcomingCalls = useCallback(
+    () =>
+      calls.filter(({ state }) => {
+        const startsAt = state?.startsAt
+          ? new Date(state.startsAt).toISOString()
+          : null;
 
-    return startsAt && startsAt > now;
-  });
+        return startsAt && startsAt > now;
+      }),
+    [calls, now]
+  );
 
-  // useEffect(() => {
-  //   const getRecord = async () => {
-  //     try {
-  //       const responses = [];
-  //       for (const meeting of calls) {
-  //         const response = await meeting.queryRecordings(); // Wait for each request
-  //         responses.push(response);
-  //       }
-  //       console.log(responses);
-  //     } catch (error) {
-  //       console.error("Error fetching recordings:", error);
-  //     }
-  //   };
-
-  //   getRecord();
-  // }, [calls]);
-
-  return { endedCalls, upcomingCalls, callRecordings: calls, isLoading };
+  return { endedCalls, upcomingCalls, isLoading };
 };

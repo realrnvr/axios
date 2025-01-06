@@ -1,4 +1,3 @@
-
 import { useStrictMode } from "../../hooks/useStrictMode";
 import { useCall, useCallStateHooks } from "@stream-io/video-react-sdk";
 
@@ -14,25 +13,28 @@ const EnableStrictModeButton = () => {
     localParticipant.userId === call?.state.createdBy.id;
 
   if (!isHost) {
-    return null; 
+    return null;
   }
 
   const toggleStrictMode = async () => {
     const newStrictMode = !isStrictMode;
     setStrictMode(newStrictMode);
-
-    await call.sendMessage({
-      text: `Strict mode has been ${newStrictMode ? "enabled" : "disabled"}.`,
-      customData: { isStrictMode: newStrictMode },
+  
+    console.log('Sending custom event');
+    await call.sendCustomEvent({
+      type: 'strict-mode-change',  
+      data: {
+        isStrictMode: newStrictMode
+      }
     });
+    console.log('Custom event sent');
   };
-
   return (
     <button
       onClick={toggleStrictMode}
-      className={`px-4 py-2 rounded-lg ${
-        isStrictMode ? "bg-green-500" : "bg-red-500"
-      }`}
+      className={`px-2 py-1 rounded-lg ${
+        isStrictMode ? "bg-green-500" : "bg-blue-500"
+      } text-base`}
     >
       {isStrictMode ? "Disable Strict Mode" : "Enable Strict Mode"}
     </button>

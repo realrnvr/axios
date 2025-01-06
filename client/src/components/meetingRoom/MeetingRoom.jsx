@@ -27,6 +27,7 @@ import {useStrictMode} from "../../hooks/useStrictMode"
 import { useStrictModeEnforcement } from "../../hooks/useStrictModeEnforcement";
 import EnableStrictModeButton from "../strictModeButton/StrictModeButton";
 import { useCall} from "@stream-io/video-react-sdk";
+import StrictModeListener from "../strictModeButton/strictModeListener";
 const MeetingRoom = () => {
 
   const [searchParams] = useSearchParams();
@@ -40,6 +41,15 @@ const MeetingRoom = () => {
   const [showParticipants, setShowParticipants] = useState(false);
   const [showChat, setShowChat] = useState(false);
   const meetingId = searchParams.get("id") || "general";
+  useEffect(() => {
+    if (isStrictMode) {
+      // Show the full-screen warning
+      console.log("Strict mode enabled - show warning");
+    } else {
+      // Hide the full-screen warning
+      console.log("Strict mode disabled - hide warning");
+    }
+  }, [isStrictMode]);
   
   // const isHost = localParticipant?.userId === call?.state.createdBy?.id;
   useStrictModeEnforcement({ isStrictMode });
@@ -67,6 +77,7 @@ const MeetingRoom = () => {
 
   return (
     <section className="relative h-screen w-full overflow-hidden pt-4 text-white">
+      <StrictModeListener/>
       <div className="relative flex size-full item-center justify-center">
       <div className={cn(
           "flex size-full max-w-[1000px] items-center",

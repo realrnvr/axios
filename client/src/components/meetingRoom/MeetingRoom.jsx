@@ -23,25 +23,27 @@ import { useNavigate, useSearchParams } from "react-router-dom";
 import EndCallButton from "../endCallButton/EndCallButton";
 import CustomLoader from "../customLoader/CustomLoader";
 import ChatMeet from "../chat/ChatMeet";
-
+import {useStrictMode} from "../../hooks/useStrictMode"
+import { useStrictModeEnforcement } from "../../hooks/useStrictModeEnforcement";
+import EnableStrictModeButton from "../strictModeButton/StrictModeButton";
+import { useCall} from "@stream-io/video-react-sdk";
 const MeetingRoom = () => {
+
   const [searchParams] = useSearchParams();
-  const isPersonalRoom = !!searchParams.get("personal");
+  const { useCallCallingState} = useCallStateHooks();
+  const callingState = useCallCallingState();
+  const navigate=useNavigate();
+  const { isStrictMode } = useStrictMode();
+  
   const [layout, setLayout] = useState("speaker-left");
+  const isPersonalRoom = !!searchParams.get("personal");
   const [showParticipants, setShowParticipants] = useState(false);
   const [showChat, setShowChat] = useState(false);
-
-  const { useCallCallingState } = useCallStateHooks();
-  const callingState = useCallCallingState();
-  const navigate = useNavigate();
   const meetingId = searchParams.get("id") || "general";
-  console.log(meetingId,"meeting id");
-  useEffect(() => {
-    if (callingState === CallingState.LEFT) {
-      navigate("/");
-    }
-  }, [callingState, navigate]);
-
+  
+  // const isHost = localParticipant?.userId === call?.state.createdBy?.id;
+  useStrictModeEnforcement({ isStrictMode });
+  useEffect(() => { if (callingState === CallingState.LEFT) { navigate("/"); } }, [callingState, navigate]);
   const CallLayout = () => {
     switch (layout) {
       case "grid": {
@@ -141,6 +143,7 @@ const MeetingRoom = () => {
             <MessageCircle size={20} className="text-white" />
           </div>
         </button>
+        {!isPersonalRoom && <EnableStrictModeButton/>}
         {!isPersonalRoom && <EndCallButton />}
       </div>
     </section>

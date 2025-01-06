@@ -11,14 +11,16 @@ import { RouterProviderBase } from "./services/provider/RouterProviderBase";
 import Auth0ProviderBase from "./services/provider/Auth0ProviderBase";
 import { Toaster } from "./components/ui/toaster";
 import VideoProvider from "./services/stream/VideoProvider";
-
+import {StrictModeProvider} from "./hooks/useStrictMode"
 createRoot(document.getElementById("root")).render(
   <StrictMode>
     <Auth0ProviderBase>
       <VideoProvider>
         <ChatProvider>
+      <StrictModeProvider>
           <RouterProviderBase />
           <Toaster />
+      </StrictModeProvider>
         </ChatProvider>
       </VideoProvider>
     </Auth0ProviderBase>

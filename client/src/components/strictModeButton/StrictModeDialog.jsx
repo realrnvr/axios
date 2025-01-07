@@ -1,7 +1,9 @@
 import { useEffect, useState } from "react";
-
+import { isHostAtom } from "../../Atoms/Atom";
+import { useRecoilValue } from "recoil";
 const StrictModeDialog = ({ message, onReenterFullscreen, onTimeout }) => {
   const [timeLeft, setTimeLeft] = useState(30);
+  const isHost =useRecoilValue(isHostAtom);
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -18,7 +20,9 @@ const StrictModeDialog = ({ message, onReenterFullscreen, onTimeout }) => {
       clearTimeout(timeout);
     };
   }, [onTimeout]);
-
+  if (isHost) {
+    return null; 
+  }
   return (
     <div className="dialog-box fixed inset-0 flex items-center justify-center bg-black bg-opacity-0 backdrop-blur-md z-10">
       <div className="bg-black bg-opacity-90 p-6 rounded-xl shadow-xl text-center">

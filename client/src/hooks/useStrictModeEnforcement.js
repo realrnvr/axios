@@ -1,6 +1,8 @@
 import { useEffect, useCallback } from "react";
-
+import {isHostAtom} from "../Atoms/Atom"
+import { useRecoilValue } from "recoil";
 export const useStrictModeEnforcement = ({ isStrictMode, onShowDialog }) => {
+  const isHost=useRecoilValue(isHostAtom)
   const handleVisibilityChange = useCallback(() => {
     if (document.hidden && isStrictMode) {
       onShowDialog("Please stay on this tab. Strict mode is enabled.");
@@ -37,7 +39,7 @@ export const useStrictModeEnforcement = ({ isStrictMode, onShowDialog }) => {
   }, []);
 
   useEffect(() => {
-    if (!isStrictMode) return;
+    if (!isStrictMode || isHost) return;
     requestFullscreen();
     document.addEventListener("visibilitychange", handleVisibilityChange);
     document.addEventListener("fullscreenchange", handleFullScreenChange);
@@ -59,7 +61,7 @@ export const useStrictModeEnforcement = ({ isStrictMode, onShowDialog }) => {
     requestFullscreen,
     handleVisibilityChange,
     handleFullScreenChange,
-    handleKeydown,
+    handleKeydown,isHost
   ]);
 
   return {

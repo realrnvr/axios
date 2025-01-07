@@ -1,34 +1,46 @@
 import { useStrictMode } from "../../hooks/useStrictMode";
 import { useCall, useCallStateHooks } from "@stream-io/video-react-sdk";
+import { isHostAtom } from "../../Atoms/Atom";
+import { useRecoilState } from "recoil";
+import { useEffect } from "react";
 
 const EnableStrictModeButton = () => {
   const { isStrictMode, setStrictMode } = useStrictMode();
   const call = useCall();
   const { useLocalParticipant } = useCallStateHooks();
   const localParticipant = useLocalParticipant();
+  const [isHost, setIsHost] = useRecoilState(isHostAtom);
 
-  const isHost =
-    localParticipant &&
-    call?.state.createdBy &&
-    localParticipant.userId === call?.state.createdBy.id;
+  useEffect(() => {
+    if (
+      localParticipant &&
+      call?.state.createdBy &&
+      localParticipant.userId === call?.state.createdBy.id
+    ) {
+      setIsHost(true);
+    } else {
+      setIsHost(false);
+    }
+  }, [localParticipant, call, setIsHost]);
 
   if (!isHost) {
-    return null;
+    return null; 
   }
 
   const toggleStrictMode = async () => {
     const newStrictMode = !isStrictMode;
     setStrictMode(newStrictMode);
-  
-    console.log('Sending custom event');
+
+    console.log("Sending custom event");
     await call.sendCustomEvent({
-      type: 'strict-mode-change',  
+      type: "strict-mode-change",
       data: {
-        isStrictMode: newStrictMode
-      }
+        isStrictMode: newStrictMode,
+      },
     });
-    console.log('Custom event sent');
+    console.log("Custom event sent");
   };
+
   return (
     <button
       onClick={toggleStrictMode}

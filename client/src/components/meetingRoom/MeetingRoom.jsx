@@ -10,7 +10,6 @@ import {
   useCallStateHooks,
 } from "@stream-io/video-react-sdk";
 import { useEffect, useState } from "react";
-
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -28,6 +27,7 @@ import { useStrictModeEnforcement } from "../../hooks/useStrictModeEnforcement";
 import EnableStrictModeButton from "../strictModeButton/StrictModeButton";
 import StrictModeListener from "../strictModeButton/strictModeListener";
 import StrictModeDialog from "../strictModeButton/StrictModeDialog";
+
 const MeetingRoom = () => {
 
   const [searchParams] = useSearchParams();
@@ -43,8 +43,7 @@ const MeetingRoom = () => {
   const meetingId = searchParams.get("id") || "general";
   const [dialogMessage, setDialogMessage] = useState("");
   const [showDialog, setShowDialog] = useState(false);
-
-  const handleShowDialog = (message) => {
+    const handleShowDialog = (message) => {
     setDialogMessage(message);
     setShowDialog(true);
   };
@@ -93,7 +92,7 @@ const MeetingRoom = () => {
   return (
     <section className="relative h-screen w-full overflow-hidden pt-4 text-white">
       <StrictModeListener/>
-      {showDialog && (
+      { showDialog && (
         <StrictModeDialog
           message={dialogMessage}
           onReenterFullscreen={handleReenterFullscreen}

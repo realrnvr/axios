@@ -26,8 +26,8 @@ import ChatMeet from "../chat/ChatMeet";
 import {useStrictMode} from "../../hooks/useStrictMode"
 import { useStrictModeEnforcement } from "../../hooks/useStrictModeEnforcement";
 import EnableStrictModeButton from "../strictModeButton/StrictModeButton";
-import { useCall} from "@stream-io/video-react-sdk";
 import StrictModeListener from "../strictModeButton/strictModeListener";
+import StrictModeDialog from "../strictModeButton/StrictModeDialog";
 const MeetingRoom = () => {
 
   const [searchParams] = useSearchParams();
@@ -41,18 +41,33 @@ const MeetingRoom = () => {
   const [showParticipants, setShowParticipants] = useState(false);
   const [showChat, setShowChat] = useState(false);
   const meetingId = searchParams.get("id") || "general";
-  useEffect(() => {
-    if (isStrictMode) {
-      // Show the full-screen warning
-      console.log("Strict mode enabled - show warning");
-    } else {
-      // Hide the full-screen warning
-      console.log("Strict mode disabled - hide warning");
+  const [dialogMessage, setDialogMessage] = useState("");
+  const [showDialog, setShowDialog] = useState(false);
+
+  const handleShowDialog = (message) => {
+    setDialogMessage(message);
+    setShowDialog(true);
+  };
+
+  const handleReenterFullscreen = async () => {
+    try {
+      await document.documentElement.requestFullscreen();
+      setShowDialog(false);
+    } catch (error) {
+      console.error("Failed to re-enter fullscreen:", error);
     }
-  }, [isStrictMode]);
-  
-  // const isHost = localParticipant?.userId === call?.state.createdBy?.id;
-  useStrictModeEnforcement({ isStrictMode });
+  };
+
+  const handleDialogTimeout = () => {
+    console.warn("User did not re-enter fullscreen in time.");
+    setShowDialog(false);
+  };
+
+  useStrictModeEnforcement({
+    isStrictMode,
+    onShowDialog: handleShowDialog,
+  });
+
   useEffect(() => { if (callingState === CallingState.LEFT) { navigate("/"); } }, [callingState, navigate]);
   const CallLayout = () => {
     switch (layout) {
@@ -78,6 +93,13 @@ const MeetingRoom = () => {
   return (
     <section className="relative h-screen w-full overflow-hidden pt-4 text-white">
       <StrictModeListener/>
+      {showDialog && (
+        <StrictModeDialog
+          message={dialogMessage}
+          onReenterFullscreen={handleReenterFullscreen}
+          onTimeout={handleDialogTimeout}
+        />
+      )}
       <div className="relative flex size-full item-center justify-center">
       <div className={cn(
           "flex size-full max-w-[1000px] items-center",

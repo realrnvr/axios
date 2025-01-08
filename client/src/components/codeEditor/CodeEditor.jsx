@@ -5,38 +5,37 @@ import axios from "axios";
 
 const CodeEditor = ({ meetingId }) => {
   const [language, setLanguage] = useState("cpp");
-  const [input, setInput] = useState(""); // State for input
-  const [code, setCode] = useState(""); // State for code
-  const [output, setOutput] = useState(""); // State for output
-  const [error, setError] = useState(""); // State for error
+  const [input, setInput] = useState("");
+  const [code, setCode] = useState(""); 
+  const [output, setOutput] = useState("");
+  const [error, setError] = useState("");
 
-  // Handle changes to code editor content
+  
   const handleEditorChange = (value, event) => {
     setCode(value);
   };
 
-  // Handle changes to input (text area) content
+  
   const handleInputChange = (event) => {
-    setInput(event.target.value); // Dynamically update input state
+    setInput(event.target.value);
   };
 
-  // Handle language selection change
+  
   const handleLanguageChange = (event) => {
     setLanguage(event.target.value);
   };
 
-  // Create an Axios instance with base URL for the Piston API
   const API = axios.create({
     baseURL: "https://emkc.org/api/v1/piston",
   });
 
-  // Handle code execution and API call
+
   const handleCodeRun = async () => {
     try {
       const response = await API.post("/execute", {
         language: language,
         source: code,
-        stdin: input, // Pass the user input as stdin
+        stdin: input,
         args: [],
       });
 
@@ -83,7 +82,7 @@ const CodeEditor = ({ meetingId }) => {
 
       {/* Input and Output side by side */}
       <div className="flex mb-4 space-x-4">
-        {/* Input Section */}
+        {/* Input*/}
         <div className="w-1/2">
           <h4 className="text-white">Input:</h4>
           <textarea
@@ -94,11 +93,11 @@ const CodeEditor = ({ meetingId }) => {
           />
         </div>
 
-        {/* Output Section */}
+        {/* Output*/}
         <div className="w-1/2">
           <h4 className="text-white">Output:</h4>
           <pre className="w-full h-full bg-gray-800 text-white p-2 rounded overflow-auto">
-            {/* If error exists, show in red in output */}
+            {/*error if any*/}
             <span
               style={{ color: error ? "red" : "inherit" }}
               dangerouslySetInnerHTML={{

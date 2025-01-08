@@ -25,9 +25,12 @@ import ChatMeet from "../chat/ChatMeet";
 import {useStrictMode} from "../../hooks/useStrictMode"
 import { useStrictModeEnforcement } from "../../hooks/useStrictModeEnforcement";
 import EnableStrictModeButton from "../strictModeButton/StrictModeButton";
-import StrictModeListener from "../strictModeButton/strictModeListener";
 import StrictModeDialog from "../strictModeButton/StrictModeDialog";
-
+import AttendanceButton from "../attendance/AttendanceButton";
+import AttendancePopup from "../attendance/AttendancePopup";
+import {isAttendanceActiveAtom} from "../../Atoms/Atom" 
+import { useRecoilValue } from "recoil";
+import EventListener from "../strictModeButton/EventListener";
 const MeetingRoom = () => {
 
   const [searchParams] = useSearchParams();
@@ -43,6 +46,8 @@ const MeetingRoom = () => {
   const meetingId = searchParams.get("id") || "general";
   const [dialogMessage, setDialogMessage] = useState("");
   const [showDialog, setShowDialog] = useState(false);
+  const isAttendanceActive= useRecoilValue(isAttendanceActiveAtom);
+
     const handleShowDialog = (message) => {
     setDialogMessage(message);
     setShowDialog(true);
@@ -88,10 +93,14 @@ const MeetingRoom = () => {
   ) {
     return <CustomLoader />;
   }
+  // attendance logic 
+  const onMarkAttendance= ()=>{ console.log("attendence marked")}
+
 
   return (
     <section className="relative h-screen w-full overflow-hidden pt-4 text-white">
-      <StrictModeListener/>
+   <EventListener/>
+     {isAttendanceActive && <AttendancePopup onMarkAttendance={onMarkAttendance}/>}
       { showDialog && (
         <StrictModeDialog
           message={dialogMessage}
@@ -177,6 +186,7 @@ const MeetingRoom = () => {
         </button>
         {!isPersonalRoom && <EnableStrictModeButton/>}
         {!isPersonalRoom && <EndCallButton />}
+        {!isPersonalRoom && <AttendanceButton/>}
       </div>
     </section>
   );

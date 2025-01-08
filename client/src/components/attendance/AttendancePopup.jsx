@@ -63,7 +63,8 @@ const AttendancePopup = () => {
   if (!isVisible) return null;
 
   return (
-    <div
+    <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-40 backdrop-blur-md z-10">
+  <div
     style={{
       position: 'fixed',
       left: `${position.x}px`,
@@ -90,6 +91,8 @@ const AttendancePopup = () => {
       </AlertDescription>
     </Alert>
   </div>
+</div>
+
   
   );
 };

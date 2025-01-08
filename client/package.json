@@ -32,6 +32,7 @@
     "react-datepicker": "^7.5.0",
     "react-dom": "^18.3.1",
     "react-router-dom": "^7.0.2",
+    "recoil": "^0.7.7",
     "stream-chat": "^8.48.0",
     "stream-chat-react": "^12.8.1",
     "tailwind-merge": "^2.5.5",

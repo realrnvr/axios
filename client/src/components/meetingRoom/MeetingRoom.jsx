@@ -1,33 +1,36 @@
 import "./meeting-room.css";
 import { cn } from "@/lib/utils";
 import {
-    CallControls,
-    CallingState,
-    CallParticipantsList,
-    CallStatsButton,
-    PaginatedGridLayout,
-    SpeakerLayout,
-    useCallStateHooks,
+  CallControls,
+  CallingState,
+  CallParticipantsList,
+  CallStatsButton,
+  PaginatedGridLayout,
+  SpeakerLayout,
+  useCallStateHooks,
 } from "@stream-io/video-react-sdk";
 import { useEffect, useState } from "react";
 import {
-    DropdownMenu,
-    DropdownMenuContent,
-    DropdownMenuItem,
-    DropdownMenuSeparator,
-    DropdownMenuTrigger,
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { LayoutList, Users, MessageCircle } from "lucide-react";
+import { LayoutList, Users ,MessageCircle } from "lucide-react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import EndCallButton from "../endCallButton/EndCallButton";
 import CustomLoader from "../customLoader/CustomLoader";
 import ChatMeet from "../chat/ChatMeet";
-import CodeEditor from "../codeEditor/CodeEditor";
-import { useStrictMode } from "../../hooks/useStrictMode"
+import {useStrictMode} from "../../hooks/useStrictMode"
 import { useStrictModeEnforcement } from "../../hooks/useStrictModeEnforcement";
 import EnableStrictModeButton from "../strictModeButton/StrictModeButton";
-import { useCall} from "@stream-io/video-react-sdk";
-import StrictModeListener from "../strictModeButton/strictModeListener";
+import StrictModeDialog from "../strictModeButton/StrictModeDialog";
+import AttendanceButton from "../attendance/AttendanceButton";
+import AttendancePopup from "../attendance/AttendancePopup";
+import {isAttendanceActiveAtom} from "../../Atoms/Atom" 
+import { useRecoilValue } from "recoil";
+import EventListener from "../strictModeButton/EventListener";
 const MeetingRoom = () => {
 
   const [searchParams] = useSearchParams();
@@ -41,18 +44,34 @@ const MeetingRoom = () => {
   const [showParticipants, setShowParticipants] = useState(false);
   const [showChat, setShowChat] = useState(false);
   const meetingId = searchParams.get("id") || "general";
-  useEffect(() => {
-    if (isStrictMode) {
-      // Show the full-screen warning
-      console.log("Strict mode enabled - show warning");
-    } else {
-      // Hide the full-screen warning
-      console.log("Strict mode disabled - hide warning");
+  const [dialogMessage, setDialogMessage] = useState("");
+  const [showDialog, setShowDialog] = useState(false);
+  const isAttendanceActive= useRecoilValue(isAttendanceActiveAtom);
+
+    const handleShowDialog = (message) => {
+    setDialogMessage(message);
+    setShowDialog(true);
+  };
+
+  const handleReenterFullscreen = async () => {
+    try {
+      await document.documentElement.requestFullscreen();
+      setShowDialog(false);
+    } catch (error) {
+      console.error("Failed to re-enter fullscreen:", error);
     }
-  }, [isStrictMode]);
-  
-  // const isHost = localParticipant?.userId === call?.state.createdBy?.id;
-  useStrictModeEnforcement({ isStrictMode });
+  };
+
+  const handleDialogTimeout = () => {
+    console.warn("User did not re-enter fullscreen in time.");
+    setShowDialog(false);
+  };
+
+  useStrictModeEnforcement({
+    isStrictMode,
+    onShowDialog: handleShowDialog,
+  });
+
   useEffect(() => { if (callingState === CallingState.LEFT) { navigate("/"); } }, [callingState, navigate]);
   const CallLayout = () => {
     switch (layout) {
@@ -74,10 +93,21 @@ const MeetingRoom = () => {
   ) {
     return <CustomLoader />;
   }
+  // attendance logic 
+  const onMarkAttendance= ()=>{ console.log("attendence marked")}
+
 
   return (
     <section className="relative h-screen w-full overflow-hidden pt-4 text-white">
-      <StrictModeListener/>
+   <EventListener/>
+     {isAttendanceActive && <AttendancePopup onMarkAttendance={onMarkAttendance}/>}
+      { showDialog && (
+        <StrictModeDialog
+          message={dialogMessage}
+          onReenterFullscreen={handleReenterFullscreen}
+          onTimeout={handleDialogTimeout}
+        />
+      )}
       <div className="relative flex size-full item-center justify-center">
       <div className={cn(
           "flex size-full max-w-[1000px] items-center",
@@ -156,6 +186,7 @@ const MeetingRoom = () => {
         </button>
         {!isPersonalRoom && <EnableStrictModeButton/>}
         {!isPersonalRoom && <EndCallButton />}
+        {!isPersonalRoom && <AttendanceButton/>}
       </div>
     </section>
   );

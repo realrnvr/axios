@@ -17,11 +17,12 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { LayoutList, Users ,MessageCircle } from "lucide-react";
+import { LayoutList, Users ,MessageCircle, Code } from "lucide-react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import EndCallButton from "../endCallButton/EndCallButton";
 import CustomLoader from "../customLoader/CustomLoader";
 import ChatMeet from "../chat/ChatMeet";
+import CodeEditor from "../codeEditor/CodeEditor";
 import {useStrictMode} from "../../hooks/useStrictMode"
 import { useStrictModeEnforcement } from "../../hooks/useStrictModeEnforcement";
 import EnableStrictModeButton from "../strictModeButton/StrictModeButton";
@@ -43,6 +44,7 @@ const MeetingRoom = () => {
   const isPersonalRoom = !!searchParams.get("personal");
   const [showParticipants, setShowParticipants] = useState(false);
   const [showChat, setShowChat] = useState(false);
+  const [showCodeEditor, setShowCodeEditor] = useState(false);
   const meetingId = searchParams.get("id") || "general";
   const [dialogMessage, setDialogMessage] = useState("");
   const [showDialog, setShowDialog] = useState(false);
@@ -133,6 +135,14 @@ const MeetingRoom = () => {
         >
           <ChatMeet meetingId={meetingId} />
         </div>
+        <div
+          className={cn(
+            "h-[calc(100vh-86px)] w-[60%] ml-2 transition-all duration-300 bg-white rounded-lg overflow-hidden",
+            showCodeEditor ? "block" : "hidden"
+          )}
+        >
+          <CodeEditor meetingId={ meetingId} />
+        </div>
       </div>
 
       <div className="fixed bottom-0 flex flex-wrap w-full items-center justify-center gap-5">
@@ -166,7 +176,8 @@ const MeetingRoom = () => {
         <button
           onClick={() =>{
             setShowParticipants((prevShowParticipants) => !prevShowParticipants);
-            if (showChat) setShowChat(false);
+            setShowChat(false);
+            setShowCodeEditor(false);
           }
           }
         >
@@ -177,11 +188,23 @@ const MeetingRoom = () => {
         <button
           onClick={() => {
             setShowChat((prev) => !prev);
-            if (showParticipants) setShowParticipants(false);
+            setShowParticipants(false);
+            setShowCodeEditor(false);
           }}
         >
           <div className="cursor-pointer rounded-2xl bg-[#19232d] px-4 py-2 hover:bg-[#4c535b]">
             <MessageCircle size={20} className="text-white" />
+          </div>
+        </button>
+        <button
+          onClick={() => {
+            setShowCodeEditor((prev) => !prev);
+            setShowParticipants(false);
+            setShowChat(false);
+          }}
+        >
+          <div className="cursor-pointer rounded-2xl bg-[#19232d] px-4 py-2 hover:bg-[#4c535b]">
+            <Code size={20} className="text-white" />
           </div>
         </button>
         {!isPersonalRoom && <EnableStrictModeButton/>}

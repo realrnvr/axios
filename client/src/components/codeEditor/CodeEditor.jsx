@@ -32,6 +32,7 @@ const CodeEditor = ({ meetingId }) => {
 
   const handleCodeRun = async () => {
     try {
+      setOutput("");
       const response = await API.post("/execute", {
         language: language,
         source: code,
@@ -49,7 +50,7 @@ const CodeEditor = ({ meetingId }) => {
   };
 
   return (
-    <div className="h-full flex flex-col bg-black w-[350px]">
+    <div className="h-full flex flex-col bg-black w-[100%]">
       {/* Language Selector */}
       <div className="mb-4 h-3">
         <select
@@ -65,7 +66,7 @@ const CodeEditor = ({ meetingId }) => {
       </div>
 
       {/* Code Editor */}
-      <div className="flex-1 mb-4 h-[60%]">
+      <div className="flex-1 mb-4 h-[100%]">
         <MonacoEditor
           language={language}
           theme="vs-dark"
@@ -81,9 +82,9 @@ const CodeEditor = ({ meetingId }) => {
       </div>
 
       {/* Input and Output side by side */}
-      <div className="flex mb-4 space-x-4">
+      <div className="flex mb-4 space-x-4 h-[30%]">
         {/* Input*/}
-        <div className="w-1/2">
+        <div className="w-1/2 h-[100%]">
           <h4 className="text-white">Input:</h4>
           <textarea
             className="w-full h-full bg-gray-700 text-white p-2 rounded"
@@ -94,7 +95,7 @@ const CodeEditor = ({ meetingId }) => {
         </div>
 
         {/* Output*/}
-        <div className="w-1/2">
+        <div className="w-1/2 h-[100%]">
           <h4 className="text-white">Output:</h4>
           <pre className="w-full h-full bg-gray-800 text-white p-2 rounded overflow-auto">
             {/*error if any*/}

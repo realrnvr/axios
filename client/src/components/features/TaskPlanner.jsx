@@ -12,7 +12,7 @@ import {
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 import "./TaskPlanner.css";
-import Navbar from "../navbar/navbar";
+import Navbar from "../navbar/Navbar";
 
 
 

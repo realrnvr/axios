@@ -156,7 +156,7 @@ const MeetingRoom = () => {
         {/* Chat Section */}
         <div
           className={cn(
-            "h-[calc(100vh-86px)] w-80 ml-2 transition-all duration-300 bg-white rounded-lg overflow-hidden",
+            "h-[calc(100vh-100px)] w-80 ml-10 transition-all duration-300 bg-white rounded-lg overflow-hidden",
             showChat ? "block" : "hidden"
           )}
         >

@@ -17,29 +17,31 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { LayoutList, Users ,MessageCircle, Code } from "lucide-react";
+import { LayoutList, Users, MessageCircle, Code } from "lucide-react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import EndCallButton from "../endCallButton/EndCallButton";
 import CustomLoader from "../customLoader/CustomLoader";
 import ChatMeet from "../chat/ChatMeet";
 import CodeEditor from "../codeEditor/CodeEditor";
-import {useStrictMode} from "../../hooks/useStrictMode"
+import { useStrictMode } from "../../hooks/useStrictMode";
 import { useStrictModeEnforcement } from "../../hooks/useStrictModeEnforcement";
 import EnableStrictModeButton from "../strictModeButton/StrictModeButton";
 import StrictModeDialog from "../strictModeButton/StrictModeDialog";
 import AttendanceButton from "../attendance/AttendanceButton";
 import AttendancePopup from "../attendance/AttendancePopup";
-import {isAttendanceActiveAtom} from "../../Atoms/Atom" 
+import { isAttendanceActiveAtom } from "../../Atoms/Atom";
 import { useRecoilValue } from "recoil";
 import EventListener from "../strictModeButton/EventListener";
-const MeetingRoom = () => {
+import InputPart from "../codeEditor/InputPart";
+import OutputPart from "../codeEditor/OutputPart";
 
+const MeetingRoom = () => {
   const [searchParams] = useSearchParams();
-  const { useCallCallingState} = useCallStateHooks();
+  const { useCallCallingState } = useCallStateHooks();
   const callingState = useCallCallingState();
-  const navigate=useNavigate();
+  const navigate = useNavigate();
   const { isStrictMode } = useStrictMode();
-  
+
   const [layout, setLayout] = useState("speaker-left");
   const isPersonalRoom = !!searchParams.get("personal");
   const [showParticipants, setShowParticipants] = useState(false);
@@ -48,9 +50,9 @@ const MeetingRoom = () => {
   const meetingId = searchParams.get("id") || "general";
   const [dialogMessage, setDialogMessage] = useState("");
   const [showDialog, setShowDialog] = useState(false);
-  const isAttendanceActive= useRecoilValue(isAttendanceActiveAtom);
+  const isAttendanceActive = useRecoilValue(isAttendanceActiveAtom);
 
-    const handleShowDialog = (message) => {
+  const handleShowDialog = (message) => {
     setDialogMessage(message);
     setShowDialog(true);
   };
@@ -74,7 +76,12 @@ const MeetingRoom = () => {
     onShowDialog: handleShowDialog,
   });
 
-  useEffect(() => { if (callingState === CallingState.LEFT) { navigate("/"); } }, [callingState, navigate]);
+  useEffect(() => {
+    if (callingState === CallingState.LEFT) {
+      navigate("/");
+    }
+  }, [callingState, navigate]);
+
   const CallLayout = () => {
     switch (layout) {
       case "grid": {
@@ -95,15 +102,16 @@ const MeetingRoom = () => {
   ) {
     return <CustomLoader />;
   }
-  // attendance logic 
-  const onMarkAttendance= ()=>{ console.log("attendence marked")}
 
+  const onMarkAttendance = () => {
+    console.log("attendance marked");
+  };
 
   return (
     <section className="relative h-screen w-full overflow-hidden pt-4 text-white">
-   <EventListener/>
-     {isAttendanceActive && <AttendancePopup onMarkAttendance={onMarkAttendance}/>}
-      { showDialog && (
+      <EventListener />
+      {isAttendanceActive && <AttendancePopup onMarkAttendance={onMarkAttendance} />}
+      {showDialog && (
         <StrictModeDialog
           message={dialogMessage}
           onReenterFullscreen={handleReenterFullscreen}
@@ -111,22 +119,41 @@ const MeetingRoom = () => {
         />
       )}
       <div className="relative flex size-full item-center justify-center">
-      <div className={cn(
-          "flex size-full max-w-[1000px] items-center",
-          showChat ? "max-w-[800px]" : "max-w-[1000px]"
-        )}>
-          <CallLayout />
-        </div>
-        {/* Fixed visibility toggle */}
+        {showCodeEditor ? (
+          <>
+            <div className="h-[calc(100vh-86px)] pl-5 w-1/3 flex flex-col space-y-2 transition-all duration-300">
+              <div className="h-1/2 bg-neutral-900 rounded-lg overflow-hidden">
+                <CallLayout />
+              </div>
+              <div className="flex space-x-2">
+               <InputPart/>
+               <OutputPart/>
+              </div>
+            </div>
+            <div className="h-[calc(100vh-86px)] w-2/3 ml-2 transition-all duration-300 bg-white rounded-lg overflow-hidden">
+              <CodeEditor />
+            </div>
+          </>
+        ) : (
+          <div className={cn(
+            "flex size-full max-w-[1000px] items-center",
+            showChat ? "max-w-[800px]" : "max-w-[1000px]"
+          )}>
+            <CallLayout />
+          </div>
+        )}
+
+        {/* Participants List */}
         <div
           className={cn(
             "h-[calc(100vh-86px)] ml-2 transition-all duration-300 call__participants-list",
-            showParticipants ? "block" : "hidden" // Toggle visibility
+            showParticipants ? "block" : "hidden"
           )}
         >
           <CallParticipantsList onClose={() => setShowParticipants(false)} />
         </div>
-        {/* this portion is newly added */}
+
+        {/* Chat Section */}
         <div
           className={cn(
             "h-[calc(100vh-86px)] w-80 ml-2 transition-all duration-300 bg-white rounded-lg overflow-hidden",
@@ -134,14 +161,6 @@ const MeetingRoom = () => {
           )}
         >
           <ChatMeet meetingId={meetingId} />
-        </div>
-        <div
-          className={cn(
-            "h-[calc(100vh-86px)] w-[60%] ml-2 transition-all duration-300 bg-white rounded-lg overflow-hidden",
-            showCodeEditor ? "block" : "hidden"
-          )}
-        >
-          <CodeEditor meetingId={ meetingId} />
         </div>
       </div>
 
@@ -172,14 +191,12 @@ const MeetingRoom = () => {
           </DropdownMenuContent>
         </DropdownMenu>
         <CallStatsButton />
-        {/* Toggle participants */}
         <button
-          onClick={() =>{
+          onClick={() => {
             setShowParticipants((prevShowParticipants) => !prevShowParticipants);
             setShowChat(false);
             setShowCodeEditor(false);
-          }
-          }
+          }}
         >
           <div className="cursor-pointer rounded-2xl bg-[#19232d] px-4 py-2 hover:bg-[#4c535b]">
             <Users size={20} className="text-white" />
@@ -207,9 +224,9 @@ const MeetingRoom = () => {
             <Code size={20} className="text-white" />
           </div>
         </button>
-        {!isPersonalRoom && <EnableStrictModeButton/>}
+        {!isPersonalRoom && <EnableStrictModeButton />}
         {!isPersonalRoom && <EndCallButton />}
-        {!isPersonalRoom && <AttendanceButton/>}
+        {!isPersonalRoom && <AttendanceButton />}
       </div>
     </section>
   );

@@ -1,26 +1,28 @@
 import { useState } from "react";
 import PropTypes from "prop-types";
 import MonacoEditor from "@monaco-editor/react";
+import "./CodeEditor.css";
 import axios from "axios";
+import { useRecoilState } from "recoil";
+import { languageAtom,inputAtom,codeAtom,outputAtom,codeErrorAtom} from "../../Atoms/Atom"
+import OutputPart from "./OutputPart";
+import InputPart from "./InputPart";
+import { Button } from "../ui/button";
+const CodeEditor = () => {
+  const [language, setLanguage] = useRecoilState(languageAtom);
+  const [input, setInput] = useRecoilState(inputAtom);
+  const [code, setCode] = useRecoilState(codeAtom); 
+  const [output, setOutput] = useRecoilState(outputAtom);
+  const [codeError, setCodeError] = useRecoilState(codeErrorAtom);
 
-const CodeEditor = ({ meetingId }) => {
-  const [language, setLanguage] = useState("cpp");
-  const [input, setInput] = useState("");
-  const [code, setCode] = useState(""); 
-  const [output, setOutput] = useState("");
-  const [error, setError] = useState("");
-
-  
   const handleEditorChange = (value, event) => {
     setCode(value);
   };
 
-  
   const handleInputChange = (event) => {
     setInput(event.target.value);
   };
 
-  
   const handleLanguageChange = (event) => {
     setLanguage(event.target.value);
   };
@@ -28,7 +30,6 @@ const CodeEditor = ({ meetingId }) => {
   const API = axios.create({
     baseURL: "https://emkc.org/api/v1/piston",
   });
-
 
   const handleCodeRun = async () => {
     try {
@@ -42,19 +43,40 @@ const CodeEditor = ({ meetingId }) => {
 
       const { output, error } = response.data;
       setOutput(output || "No output");
-      setError(error || "");
+      setCodeError(error || "");
     } catch (err) {
-      setError("Error occurred while running code, sorry for the inconvenience.");
+      setCodeError("Error occurred while running code, sorry for the inconvenience.");
       setOutput("");
     }
   };
 
   return (
-    <div className="h-full flex flex-col bg-black w-[100%]">
-      {/* Language Selector */}
-      <div className="mb-4 h-3">
+    <div className="h-full flex flex-col bg-neutral-900 w-[100%]  mx-auto ">
+      {/* Header with Language Selector and Run Button */}
+      {/* <div className="items-center mb-4">
         <select
-          className="text-white bg-gray-700 p-1 rounded w-full"
+          className="text-white bg-gray-700 p-2 rounded"
+          value={language}
+          onChange={handleLanguageChange}
+        >
+          <option value="cpp">C++</option>
+          <option value="javascript">JavaScript</option>
+          <option value="python">Python</option>
+          <option value="java">Java</option>
+        </select>
+    
+        <button
+          onClick={handleCodeRun}
+          className="bg-blue-500 text-white p-2 rounded"
+        >
+          Run
+        </button>
+      </div> */}
+  <div className="code--buttons-div">
+    <Button onClick={handleCodeRun}
+          className="bg-blue-500 text-white  mx-3 ">Run</Button>
+  <select
+          className="text-white text-sm bg-neutral-800 mx-3 py-5px rounded "
           value={language}
           onChange={handleLanguageChange}
         >
@@ -64,9 +86,8 @@ const CodeEditor = ({ meetingId }) => {
           <option value="java">Java</option>
         </select>
       </div>
-
       {/* Code Editor */}
-      <div className="flex-1 mb-4 h-[100%]">
+      <div className="flex-1 mt-1">
         <MonacoEditor
           language={language}
           theme="vs-dark"
@@ -80,48 +101,13 @@ const CodeEditor = ({ meetingId }) => {
           onChange={handleEditorChange}
         />
       </div>
-
-      {/* Input and Output side by side */}
-      <div className="flex mb-4 space-x-4 h-[30%]">
-        {/* Input*/}
-        <div className="w-1/2 h-[100%]">
-          <h4 className="text-white">Input:</h4>
-          <textarea
-            className="w-full h-full bg-gray-700 text-white p-2 rounded"
-            placeholder="Enter your input"
-            value={input}
-            onChange={handleInputChange}
-          />
-        </div>
-
-        {/* Output*/}
-        <div className="w-1/2 h-[100%]">
-          <h4 className="text-white">Output:</h4>
-          <pre className="w-full h-full bg-gray-800 text-white p-2 rounded overflow-auto">
-            {/*error if any*/}
-            <span
-              style={{ color: error ? "red" : "inherit" }}
-              dangerouslySetInnerHTML={{
-                __html: output.replace(/\n/g, "<br />"),
-              }}
-            />
-          </pre>
-        </div>
-      </div>
-
-      {/* Run Button */}
-      <button
-        onClick={handleCodeRun}
-        className="mt-2 bg-blue-500 text-white p-2 rounded"
-      >
-        Run
-      </button>
-
+    
+      
       {/* Error Section */}
-      {error && (
+      {codeError && (
         <div className="mt-4 bg-red-700 p-2 rounded">
           <h4 className="text-white">Error:</h4>
-          <pre className="text-white overflow-auto">{error}</pre>
+          <pre className="text-white overflow-auto">{codeError}</pre>
         </div>
       )}
     </div>

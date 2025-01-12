@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useCallback } from 'react';
 import PropTypes from "prop-types";
 import MonacoEditor from "@monaco-editor/react";
 import axios from "axios";
@@ -7,6 +7,8 @@ import { languageAtom, inputAtom, codeAtom, outputAtom, codeErrorAtom } from "..
 import { Button } from "@/components/ui/button";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Loader2 } from "lucide-react";
+import { useCall, useCallStateHooks } from "@stream-io/video-react-sdk";
+import debounce from 'lodash/debounce';
 
 const SUPPORTED_LANGUAGES = {
   javascript: { label: "JavaScript", defaultCode: "console.log('Hello World!');" },
@@ -22,18 +24,73 @@ const CodeEditor = () => {
   const [output, setOutput] = useRecoilState(outputAtom);
   const [codeError, setCodeError] = useRecoilState(codeErrorAtom);
   const [isLoading, setIsLoading] = React.useState(false);
+  const [syncError, setSyncError] = React.useState(null);
+  const [lastUpdateTimestamp, setLastUpdateTimestamp] = React.useState(0);
+  const call = useCall();
+  const { useParticipants } = useCallStateHooks();
+  const participants = useParticipants();
 
-  React.useEffect(() => {
+  // Initialize editor with default code
+  useEffect(() => {
     setCode(SUPPORTED_LANGUAGES[language]?.defaultCode || "");
   }, [language, setCode]);
 
+  // Debounced function to send code updates
+  const debouncedSendCode = useCallback(
+    debounce(async (newCode, newLanguage) => {
+      try {
+        const timestamp = Date.now();
+        setLastUpdateTimestamp(timestamp);
+        await call.sendCustomEvent({
+          type: "code-update",
+          data: {
+            code: newCode,
+            language: newLanguage,
+            timestamp,
+            sender: call.sessionId
+          }
+        });
+        setSyncError(null);
+      } catch (error) {
+        setSyncError('Failed to sync code: ' + error.message);
+        console.error('Error sending code:', error);
+      }
+    }, 1000),
+    [call]
+  );
+
+  // Handle local code changes
   const handleEditorChange = (value) => {
     setCode(value);
+    debouncedSendCode(value, language);
   };
 
+  // Handle language changes
   const handleLanguageChange = (event) => {
-    setLanguage(event.target.value);
+    const newLanguage = event.target.value;
+    setLanguage(newLanguage);
+    debouncedSendCode(code, newLanguage);
   };
+
+  // Listen for remote code updates
+  useEffect(() => {
+    const handleRemoteUpdate = (event) => {
+      if (event.type === "code-update" && 
+          event.data.timestamp > lastUpdateTimestamp && 
+          event.data.sender !== call.sessionId) {
+        setCode(event.data.code);
+        setLanguage(event.data.language);
+      }
+    };
+
+    // Subscribe to custom events
+    const unsubscribe = call.on('custom', handleRemoteUpdate);
+
+    return () => {
+      debouncedSendCode.cancel();
+      unsubscribe();
+    };
+  }, [call, lastUpdateTimestamp,debouncedSendCode,setCode,setLanguage]);
 
   const API = axios.create({
     baseURL: "https://emkc.org/api/v1/piston",
@@ -53,6 +110,16 @@ const CodeEditor = () => {
       const { output, error } = response.data;
       setOutput(output || "No output");
       setCodeError(error || "");
+
+      // Notify others about code execution result
+      await call.sendCustomEvent({
+        type: "code-execution",
+        data: {
+          output: output || "No output",
+          error: error || "",
+          executor: call.sessionId
+        }
+      });
     } catch (err) {
       setCodeError("Error occurred while running code, sorry for the inconvenience.");
       setOutput("");
@@ -60,6 +127,19 @@ const CodeEditor = () => {
       setIsLoading(false);
     }
   };
+
+  // Listen for remote code executions
+  useEffect(() => {
+    const handleCodeExecution = (event) => {
+      if (event.type === "code-execution" && event.data.executor !== call.sessionId) {
+        setOutput(event.data.output);
+        setCodeError(event.data.error);
+      }
+    };
+
+    const unsubscribe = call.on('custom', handleCodeExecution);
+    return () => unsubscribe();
+  }, [call,setCodeError,setOutput]);
 
   return (
     <div className="flex flex-col h-full bg-neutral-900 w-full gap-4 p-4">
@@ -91,6 +171,10 @@ const CodeEditor = () => {
               </option>
             ))}
           </select>
+
+          <div className="text-sm text-gray-400">
+            {participants.length} participant{participants.length !== 1 ? 's' : ''} connected
+          </div>
         </div>
 
         {output && !codeError && (
@@ -99,6 +183,12 @@ const CodeEditor = () => {
           </div>
         )}
       </div>
+
+      {syncError && (
+        <Alert variant="destructive">
+          <AlertDescription>{syncError}</AlertDescription>
+        </Alert>
+      )}
 
       <div className="flex-1 min-h-[400px]">
         <MonacoEditor
@@ -125,8 +215,6 @@ const CodeEditor = () => {
           </AlertDescription>
         </Alert>
       )}
-
-    
     </div>
   );
 };

@@ -56,7 +56,7 @@ const CodeEditor = () => {
         console.error('Error sending code:', error);
       }
     }, 1000),
-    [call]
+    [call,language]
   );
 
   // Handle local code changes

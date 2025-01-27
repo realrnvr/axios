@@ -13,7 +13,7 @@ import {
   SidebarGroup,
   SidebarHeader,
 } from "@/components/ui/sidebar";
-
+import { BackgroundBeams } from "../../components/extraUicom/backgroundBeams";
 const Hero = () => {
   const [values, setValues] = useState({
     dateTime: new Date(),
@@ -36,8 +36,8 @@ const Hero = () => {
   };
 
   return (
-    <>
-      <Navbar />
+    <> 
+    <Navbar />
       <Sidebar>
         <SidebarHeader />
         <SidebarContent>
@@ -146,6 +146,7 @@ const Hero = () => {
           </div>
         ) : null}
       </section>
+      <BackgroundBeams/>
     </>
   );
 };

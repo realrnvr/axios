@@ -126,7 +126,7 @@ const CreateMeet = () => {
                   <path d="M512 64C264.6 64 64 264.6 64 512s200.6 448 448 448 448-200.6 448-448S759.4 64 512 64zm0 820c-205.4 0-372-166.6-372-372s166.6-372 372-372 372 166.6 372 372-166.6 372-372 372z" />
                 </svg>
               </figure>
-              <figcaption>Join</figcaption>
+              <figcaption  className="hero__caption">Join</figcaption>
             </button>
             <CreateButton onClick={createMeeting} />
           </div>
@@ -206,7 +206,7 @@ const CreateMeet = () => {
             </div>
           ) : null}
         </div>
-        <div className="hero__feature-wrapper">
+        {/* <div className="hero__feature-wrapper">
           <div className="hero__feature">
             <div className="hero__schedule-meet">
               <h2 className="hero__feature-title">Upcomming Meetings:</h2>
@@ -221,7 +221,7 @@ const CreateMeet = () => {
               </div>
             </div>
           </div>
-        </div>
+        </div> */}
       </section>
     </>
   );

@@ -13,7 +13,7 @@ import {
 import { Textarea } from "@/components/ui/textarea";
 import "./TaskPlanner.css";
 import Navbar from "../navbar/Navbar";
-
+import {BackgroundBeams} from "../../components/extraUicom/backgroundBeams"
 
 
 const TaskPlanner = () => {
@@ -331,6 +331,7 @@ const TaskPlanner = () => {
           </Card>
         ))}
       </div>
+      <BackgroundBeams/>
     </div>
   );
 };

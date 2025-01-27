@@ -41,6 +41,13 @@
   background-clip: text;
   -webkit-text-fill-color: transparent;
 }
+.text-gradient--clr-yellow {
+  background: linear-gradient(135deg, #fff896, #ba9e00);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
 /* 
 .shadow {
   background: hsl(var(--primary) / 0%);

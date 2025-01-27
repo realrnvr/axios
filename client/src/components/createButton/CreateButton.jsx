@@ -12,7 +12,7 @@ const CreateButton = ({ onClick }) => {
           />
         </svg>
       </figure>
-      <figcaption>Create</figcaption>
+      <figcaption  className="hero__caption">Create</figcaption>
     </button>
   );
 };

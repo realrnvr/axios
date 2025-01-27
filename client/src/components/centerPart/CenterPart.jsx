@@ -9,7 +9,7 @@ const CenterPart = () => {
       <div className="centerpart__text">
         <p className="centerpart__intro">Welcome to</p>
         <h2 className="centerpart__title">
-          <strong className="text-gradient--clr-blue">Enter</strong>
+          <strong className="text-gradient--clr-yellow">Enter</strong>
           Act.
         </h2>
         <p className="centerpart__description">

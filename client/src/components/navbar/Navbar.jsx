@@ -9,7 +9,7 @@ const Navbar = () => {
     <div className="navbar_container | container">
       <div className="navbar">
         <div className="logo">
-          <strong className="text-gradient--clr-blue">Enter</strong>Act
+          <strong className="text-gradient--clr-yellow">Enter</strong>Act
         </div>
         <div className="navbar_buttons">
           {isAuthenticated && user?.picture && (

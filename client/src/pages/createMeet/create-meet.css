@@ -13,16 +13,19 @@
 .hero__content {
   display: flex;
   gap: 1rem;
-  background-color: var(--clr-primary);
+  /* background-color: var(--clr-primary); */
   padding: 2rem;
   border-radius: 10px;
 }
-
+.hero__caption{
+  color: black;
+  font-weight: 600;
+}
 .hero__card {
   display: flex;
   flex-direction: column;
   align-items: center;
-  background: linear-gradient(135deg, #9698ea, #0266ad);
+  background: linear-gradient(135deg, #fff896, #ba9e00);
   padding: 1rem;
   border-radius: 10px;
   width: 100px;
@@ -31,12 +34,15 @@
 .hero__svg {
   width: 40px;
   aspect-ratio: 1 / 1;
+  color: #000;
 }
 
 .hero__schedule-modal {
   margin-top: 1rem;
   width: 100%;
-  background-color: orange;
+  background: linear-gradient(135deg, #a9aa5cf8, #d8ce3fab);
+  color:black;
+  font-weight:400;
   padding: 1rem;
   border-radius: 10px;
 }
@@ -84,7 +90,7 @@
   flex-direction: column;
   gap: 0.5rem;
   width: 100%;
-  background-color: orange;
+  background: linear-gradient(135deg, #a9aa5cf8, #d8ce3fab);
   padding: 1rem;
   border-radius: 10px;
   margin-top: 1rem;

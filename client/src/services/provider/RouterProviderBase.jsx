@@ -34,10 +34,6 @@ const router = createBrowserRouter([
     path: "/ended",
     element: <Ended />,
   },
-  {
-    path: "/taskplanner",
-    element: <TaskPlanner />,
-  },
 ]);
 
 export const RouterProviderBase = () => {

@@ -1,340 +1,137 @@
-import { useState, useEffect, useRef } from "react";
-import { Plus, X, GripVertical, Save, ChevronDown, ChevronUp } from "lucide-react";
-import { Card, CardContent } from "@/components/ui/card";
+import { useState, useEffect } from "react";
+import { Plus, X, CheckCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import { Textarea } from "@/components/ui/textarea";
-import "./TaskPlanner.css";
-import Navbar from "../navbar/Navbar";
-import {BackgroundBeams} from "../../components/extraUicom/backgroundBeams"
 
-
-const TaskPlanner = () => {
+const MinimalTaskPlanner = () => {
   const [tasks, setTasks] = useState([]);
-  const [newTaskTitle, setNewTaskTitle] = useState("");
-  const [selectedTask, setSelectedTask] = useState(null);
-  const [dragging, setDragging] = useState(null);
-  const [offset, setOffset] = useState({ x: 0, y: 0 });
-  const [isDragging, setIsDragging] = useState(false);
-  const [showBackgroundText, setShowBackgroundText] = useState(true);
-  const containerRef = useRef(null);
-
-  const categories = [
-    { value: "todo", label: "To Do", color: "bg-blue-100" },
-    { value: "inProgress", label: "In Progress", color: "bg-yellow-100" },
-    { value: "done", label: "Done", color: "bg-green-100" },
-    { value: "blocked", label: "Blocked", color: "bg-red-100" },
-  ];
-
+  const [newTask, setNewTask] = useState("");
 
   useEffect(() => {
-    const savedTasks = localStorage.getItem("tasks");
-    if (savedTasks) {
-      try {
-        setTasks(JSON.parse(savedTasks));
-        if(savedTasks){setShowBackgroundText(false)}
-      } catch (error) {
-        console.error("Error parsing tasks:", error);
-      }
-    }
+    const saved = localStorage.getItem("simpleTasks");
+    if (saved) setTasks(JSON.parse(saved));
   }, []);
 
-
   useEffect(() => {
-    const handleMouseMove = (e) => {
-      if (dragging && isDragging) {
-        e.preventDefault();
-        const container = containerRef.current;
-        const rect = container.getBoundingClientRect();
-        
-        const newX = Math.min(
-          Math.max(e.clientX - offset.x, 0),
-          rect.width - 290
-        );
-        const newY = Math.min(
-          Math.max(e.clientY - offset.y, 0),
-          rect.height - 100
-        );
+    localStorage.setItem("simpleTasks", JSON.stringify(tasks));
+  }, [tasks]);
 
-        setTasks(prevTasks =>
-          prevTasks.map(task => {
-            if (task.id === dragging) {
-              return {
-                ...task,
-                position: { x: newX, y: newY },
-              };
-            }
-            return task;
-          })
-        );
-      }
-    };
-
-    const handleMouseUp = () => {
-      setDragging(null);
-      setIsDragging(false);
-    };
-
-    document.addEventListener('mousemove', handleMouseMove);
-    document.addEventListener('mouseup', handleMouseUp);
-
-    return () => {
-      document.removeEventListener('mousemove', handleMouseMove);
-      document.removeEventListener('mouseup', handleMouseUp);
-    };
-  }, [dragging, offset, isDragging]);
-
-
-  
-  const handleTouchStart = (e, taskId) => {
-    e.preventDefault();
-    const touch = e.touches[0];
-    const task = tasks.find(t => t.id === taskId);
-    const rect = e.target.getBoundingClientRect();
-    
-    setDragging(taskId);
-    setIsDragging(true);
-    setOffset({
-      x: touch.clientX - task.position.x,
-      y: touch.clientY - task.position.y
-    });
-  };
-
-  const handleTouchMove = (e) => {
-    if (dragging && isDragging) {
-      e.preventDefault();
-      const touch = e.touches[0];
-      const container = containerRef.current;
-      const rect = container.getBoundingClientRect();
-  
-      const newX = Math.min(
-        Math.max(touch.clientX - offset.x, 0),
-        rect.width - 290
-      );
-      const newY = Math.min(
-        Math.max(touch.clientY - offset.y, 0),
-        rect.height - 100
-      );
-  
-      setTasks(prevTasks =>
-        prevTasks.map(task => {
-          if (task.id === dragging) {
-            return {
-              ...task,
-              position: { x: newX, y: newY },
-            };
-          }
-          return task;
-        })
-      );
+  const addTask = () => {
+    if (newTask.trim()) {
+      setTasks([...tasks, { id: Date.now(), text: newTask, completed: false }]);
+      setNewTask("");
     }
   };
 
-  const handleTouchEnd = () => {
-    setDragging(null);
-    setIsDragging(false);
+  const toggleTask = (id) => {
+    setTasks(tasks.map(task => 
+      task.id === id ? { ...task, completed: !task.completed } : task
+    ));
   };
 
-  const startDragging = (e, taskId) => {
-    const task = tasks.find(t => t.id === taskId);
-    const rect = e.currentTarget.getBoundingClientRect();
-    setDragging(taskId);
-    setIsDragging(true);
-    setOffset({
-      x: e.clientX - task.position.x,
-      y: e.clientY - task.position.y
-    });
-    e.stopPropagation();
-  };
-
-  const handleSaveToLocal = () => {
-    try {
-      localStorage.setItem("tasks", JSON.stringify(tasks));
-      alert("Tasks saved successfully!");
-    } catch (error) {
-      alert("Error saving tasks: " + error.message);
-    }
-  };
-
-  const handleAddTask = () => {
-    if (newTaskTitle.trim()) {
-      const isMobile = window.innerWidth <= 640;
-      const newTask = {
-        id: Date.now().toString(),
-        title: newTaskTitle,
-        description: "",
-        category: "todo",
-        position: {
-          x: isMobile ? 
-            (window.innerWidth - 290) / 2 : 
-            Math.min(Math.random() * (window.innerWidth - 320), window.innerWidth - 320),
-          y: Math.min(
-            Math.random() * (window.innerHeight - 220) + 80,
-            window.innerHeight - 220
-          ),
-        },
-        dueDate: "",
-      };
-      setTasks(prev => [...prev, newTask]);
-      setNewTaskTitle("");
-      setShowBackgroundText(false); 
-    }
-  };
-  const handleUpdateTask = (taskId, updates) => {
-    setTasks(prev =>
-      prev.map(task => 
-        task.id === taskId ? { ...task, ...updates } : task
-      )
-    );
-  };
-
-  const handleDeleteTask = (taskId) => {
-    setTasks(prev => {
-      const newTasks = prev.filter(task => task.id !== taskId);
-      if (newTasks.length === 0) {
-        setShowBackgroundText(true);
-      }
-      return newTasks;
-    });
-    setSelectedTask(null);
+  const deleteTask = (id) => {
+    setTasks(tasks.filter(task => task.id !== id));
   };
 
   return (
-    <div className="task-container">
-      <Navbar />
-      <div className="task-planner" ref={containerRef}>
-      {showBackgroundText && <div className="background-text">Task Planner</div>}
-        <div className="controls-container">
-          <div className="controls-input">
-            <Input
-              value={newTaskTitle}
-              onChange={(e) => setNewTaskTitle(e.target.value)}
-              placeholder="Enter task title"
-              className="w-64 border-gray-500"
-              onKeyPress={(e) => e.key === "Enter" && handleAddTask()}
-           
-            />
-          </div>
-          <div className="controls-buttons">
-            <Button onClick={handleAddTask} variant="secondary">
-              <Plus className="w-4 h-4 mr-2" />
-              Add Task
-            </Button>
-            <Button onClick={handleSaveToLocal} variant="secondary">
-              <Save className="w-4 h-4 mr-2" />
-              Save
-            </Button>
+    <div className="h-full">
+      {tasks.length === 0 ? (
+        <div>
+          <h3 className="slider__intro-title">Welcome to Task Planner</h3>
+          <div className="slider__text-container">
+            <p className="slider__description">
+              Organize your tasks efficiently with a simple two-column layout.
+            </p>
+            <p className="slider__description">
+              <strong className="slider__strong">Quick Add:</strong> Type and press Enter to add tasks
+            </p>
           </div>
         </div>
+      ) : null}
 
-        {tasks.map((task) => (
-          <Card
-            key={task.id}
-            className={`task-card category-${task.category}`}
-            style={{
-              position: 'absolute',
-              left: task.position.x,
-              top: task.position.y,
-              cursor: isDragging && dragging === task.id ? 'grabbing' : 'grab',
-              zIndex: dragging === task.id ? 1000 : 1,
-              touchAction: 'none',
-            }}
+      <div className="mt-6">
+        <div className="flex items-center gap-3 mb-6">
+          <Input
+            value={newTask}
+            onChange={(e) => setNewTask(e.target.value)}
+            onKeyPress={(e) => e.key === "Enter" && addTask()}
+            placeholder="Add new task..."
+            className="flex-1 bg-[#1c1917] border-none text-white placeholder:text-gray-400"
+          />
+          <Button 
+            onClick={addTask}
+            className="bg-[#eab308] hover:bg-[#ca9a06] text-yellow"
           >
-            <CardContent className="task-content">
-              <div 
-                className="task-header"
-                onMouseDown={(e) => startDragging(e, task.id)}
-                onTouchStart={(e) => handleTouchStart(e, task.id)}
-                onTouchMove={handleTouchMove}
-                onTouchEnd={handleTouchEnd}
-              >
-                <GripVertical className="w-4 h-4" />
-                <span className="task-title">{task.title}</span>
-                <div className="task-buttons">
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      setSelectedTask(selectedTask === task.id ? null : task.id);
-                    }}
-                    className="expand-button"
+            <Plus className="w-4 h-4" />
+          </Button>
+        </div>
+
+        <div className="slider__grid">
+          {/* Pending Tasks Column */}
+          <div className="rounded-lg p-4 bg-[#1c1917] border border-black">
+            <h2 className="text-xl font-semibold mb-4 text-yellow">Pending</h2>
+            <div className="space-y-3">
+              {tasks.filter(t => !t.completed).map(task => (
+                <div 
+                  key={task.id} 
+                  className="flex items-center gap-2 bg-[#262626] p-3 rounded-md border border-black"
+                >
+                  <Button 
+                    variant="ghost" 
+                    size="sm" 
+                    onClick={() => toggleTask(task.id)}
+                    className="hover:bg-[#eab308]/20"
                   >
-                    {selectedTask === task.id ? 
-                      <ChevronUp className="w-4 h-4" /> : 
-                      <ChevronDown className="w-4 h-4" />
-                    }
+                    <CheckCircle className="w-4 h-4" />
                   </Button>
-                  <Button
-                    variant="ghost"
+                  <span className="flex-1 text-white">{task.text}</span>
+                  <Button 
+                    variant="ghost" 
                     size="sm"
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      handleDeleteTask(task.id);
-                    }}
-                    className="delete-button"
+                    onClick={() => deleteTask(task.id)}
+                    className="hover:bg-red-500/20"
                   >
                     <X className="w-4 h-4" />
                   </Button>
                 </div>
-              </div>
-              {selectedTask === task.id && (
-                <div className="task-details">
-                  <Select
-                    value={task.category}
-                    onValueChange={(value) =>
-                      handleUpdateTask(task.id, { category: value })
-                    }
+              ))}
+            </div>
+          </div>
+
+          {/* Completed Tasks Column */}
+          <div className="rounded-lg p-4 bg-[#1c1917] border border-black">
+            <h2 className="text-xl font-semibold mb-4 text-white">Completed</h2>
+            <div className="space-y-3">
+              {tasks.filter(t => t.completed).map(task => (
+                <div 
+                  key={task.id} 
+                  className="flex items-center gap-2 bg-[#262626] p-3 rounded-md border border-black"
+                >
+                  <Button 
+                    variant="ghost" 
+                    size="sm"
+                    onClick={() => toggleTask(task.id)}
+                    className="hover:bg-[#eab308]/20"
                   >
-                    <SelectTrigger>
-                      <SelectValue placeholder="Select category" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      {categories.map((category) => (
-                        <SelectItem
-                          key={category.value}
-                          value={category.value}
-                        >
-                          {category.label}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                  <Textarea
-                    placeholder="Add description..."
-                    value={task.description}
-                    onChange={(e) =>
-                      handleUpdateTask(task.id, {
-                        description: e.target.value,
-                      })
-                    }
-                    className="task-textarea"
-                  />
-                  <Input
-                    type="date"
-                    value={task.dueDate}
-                    onChange={(e) =>
-                      handleUpdateTask(task.id, { dueDate: e.target.value })
-                    }
-                    className="task-date"
-                  />
+                    <CheckCircle className="w-4 h-4 text-[#eab308]" />
+                  </Button>
+                  <span className="flex-1 line-through text-gray-400">{task.text}</span>
+                  <Button 
+                    variant="ghost" 
+                    size="sm"
+                    onClick={() => deleteTask(task.id)}
+                    className="hover:bg-red-500/20"
+                  >
+                    <X className="w-4 h-4" />
+                  </Button>
                 </div>
-              )}
-            </CardContent>
-          </Card>
-        ))}
+              ))}
+            </div>
+          </div>
+        </div>
       </div>
-      <BackgroundBeams/>
-  
     </div>
   );
 };
 
-export default TaskPlanner;
+export default MinimalTaskPlanner;

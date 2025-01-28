@@ -3,6 +3,7 @@ import { useState } from "react";
 import { useAuth0 } from "@auth0/auth0-react";
 import Upcoming from "@/pages/upcoming/Upcoming";
 import Ended from "@/pages/ended/Ended";
+import TaskPlanner from "../../components/features/TaskPlanner";
 
 const Util = () => {
   const [open, setOpen] = useState(false);
@@ -12,6 +13,7 @@ const Util = () => {
   const outletMap = {
     upcomming: <Upcoming />,
     ended: <Ended />,
+    taskplanner: <TaskPlanner />
   };
 
   const getOutlet = (type) => {
@@ -70,6 +72,20 @@ const Util = () => {
                 </svg>
                 <span>Ended</span>
               </button>
+              <button
+                onClick={() => setOutlet("taskplanner")}
+                className={`slider__nav-btn ${
+                  outlet === "taskplanner" ? "slider__nav-btn--active" : null
+                }`}
+              >
+                <svg viewBox="0 0 24 24" className="slidebar__svg">
+                  <path
+                    fill="currentColor"
+                    d="M3 13h2v-2H3zm0 4h2v-2H3zm0-8h2V7H3zm4 4h14v-2H7zm0 4h14v-2H7zM7 7v2h14V7zm-4 6h2v-2H3zm0 4h2v-2H3zm0-8h2V7H3zm4 4h14v-2H7zm0 4h14v-2H7zM7 7v2h14V7z"
+                  ></path>
+                </svg>
+                <span>Task Planner</span>
+              </button>
             </div>
           </div>
           <div
@@ -99,6 +115,12 @@ const Util = () => {
                       Manage Participants:
                     </strong>{" "}
                     Add, remove, or update participants with ease.
+                  </p>
+                  <p className="slider__description">
+                    <strong className="slider__strong">
+                      Plan Your Tasks:
+                    </strong>{" "}
+                    Organize and track your tasks efficiently.
                   </p>
                 </div>
               </div>

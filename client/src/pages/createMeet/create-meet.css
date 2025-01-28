@@ -13,11 +13,10 @@
 .hero__content {
   display: flex;
   gap: 1rem;
-  /* background-color: var(--clr-primary); */
   padding: 2rem;
   border-radius: 10px;
 }
-.hero__caption{
+.hero__caption {
   color: black;
   font-weight: 600;
 }
@@ -41,8 +40,8 @@
   margin-top: 1rem;
   width: 100%;
   background: linear-gradient(135deg, #a9aa5cf8, #d8ce3fab);
-  color:black;
-  font-weight:400;
+  color: black;
+  font-weight: 400;
   padding: 1rem;
   border-radius: 10px;
 }

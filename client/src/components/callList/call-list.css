@@ -1,8 +1,9 @@
 .meeting__card {
   padding: 1rem;
   border-radius: 10px;
-  background-color: #0266ad;
+  background-color: #1c1917;
   max-width: 250px;
+  border: 1px solid #fff;
 }
 
 .meeting__card > * + * {
@@ -17,17 +18,20 @@
 
 .meeting__id {
   margin-top: 0.3rem;
-  background-color: #000;
+  background-color: #fff;
   padding: 0.3rem;
   border-radius: 7px;
 }
 
 .meeting__id-para {
-  font-size: var(--fs-100);
-  font-weight: var(--fw-300);
+  font-size: 14px;
+  font-weight: var(--fw-400);
+  color: #000;
 }
 
 .meeting__label {
+  font-size: 18px;
+  font-weight: 300;
   text-decoration: underline;
   text-transform: uppercase;
 }
@@ -36,4 +40,9 @@
   margin-top: 1rem;
   display: flex;
   gap: 1rem;
+}
+
+.meetin__date {
+  font-size: 16px;
+  font-weight: 300;
 }

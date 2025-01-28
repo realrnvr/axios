@@ -20,30 +20,33 @@ export const FloatingDock = ({
   const mouseX = useMotionValue(Infinity);
 
   return (
+    <>
     <motion.div
       onMouseMove={(e) => mouseX.set(e.pageX)}
       onMouseLeave={() => mouseX.set(Infinity)}
       className={`
-        fixed bottom-4 left-1/2 -translate-x-1/2 z-50 
+        z-50 
         inline-flex h-16 gap-2 md:gap-4 items-end 
-        rounded-2xl bg-neutral-900/50 backdrop-blur-sm 
+        rounded-2xl backdrop-blur-sm 
         px-2 md:px-3 pb-3 pt-2 shadow-lg
-        w-fit
+        w-fit text-center
         ${mobileClassName || ''} 
         ${desktopClassName || ''}
-      `}
-    >
+        `}
+        >
+      <p className='pb-1'>Host Controls :</p>
       {items.map((item) => (
         <IconContainer 
-          mouseX={mouseX} 
-          key={item.title} 
-          {...item} 
-          defaultBgColor={defaultBgColor}
-          defaultHoverColor={defaultHoverColor}
-          onItemClick={handleItemClick}
+        mouseX={mouseX} 
+        key={item.title} 
+        {...item} 
+        defaultBgColor={defaultBgColor}
+        defaultHoverColor={defaultHoverColor}
+        onItemClick={handleItemClick}
         />
       ))}
     </motion.div>
+    </>
   );
 };
 

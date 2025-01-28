@@ -132,8 +132,6 @@ const Hero = () => {
           </div>
         ) : null}
       </section>
-      
-     
       <BackgroundBeams />
     </>
   );

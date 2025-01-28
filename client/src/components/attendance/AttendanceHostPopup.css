@@ -1,0 +1,95 @@
+.dialog-box-attendance {
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(1px);
+    z-index: 10;
+}
+
+.popup-content-attendence {
+    background-color: rgba(0, 0, 0, 0.9);
+    padding: 1.5rem;
+    border-radius: 0.75rem;
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    position: relative;
+    width: 90%;
+    height:80%;
+    width: 90%;
+    border: 2px solid rgba(255, 255, 255, 0.236);
+  }
+  .attendence-div-start{
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    border-bottom: 2px dotted rgba(255, 255, 255, 0.648);
+  }
+
+  .close-button {
+    position: absolute;
+    top: 0.5rem;
+    right: 0.5rem;
+    color: #ef4444;
+    font-size: 1.25rem;
+    font-weight: bold;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0.25rem 0.5rem;
+  }
+  .close-button:hover {
+    opacity: 0.8;
+  }
+  
+  .title-attendence {
+    font-size: 1.25rem;
+    color: #eab308;
+    font-weight: bold;
+   text-align: start;
+    margin-bottom: 1rem;
+  }
+  .Total-party-data{
+   display: flex;
+    max-height: 90%;
+    min-width: 300px;
+    max-width: 100%;
+    padding: 1rem;
+  }
+  .totol-participants{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-right: 2px dotted rgba(255, 255, 255, 0.621);
+    height: 100%;
+    width: 50%;
+  }
+  .present-participants{
+    width: 50%;
+    height: 100%;
+  }
+
+  .description-attendence {
+    margin-bottom: 1rem;
+    color: #ffffff;
+    line-height: 1.5;
+    max-width: 50ch;
+    text-align: start;
+  }
+  
+  .attendance-count {
+    margin-top: 1rem;
+    color: #ffffff;
+    font-size: 0.875rem;
+  }
+  .lowerDiv-attendence{
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    padding-top: 1rem;
+  }

@@ -1,31 +1,55 @@
-
 import AttendanceButton from "./AttendanceButton";
-
-const AttendenceHostPopup = ({ isAttendencePopop,setIsAttendencePopup }) => {
+import './AttendanceHostPopup.css';
+import {
+  CallParticipantsList,
+} from "@stream-io/video-react-sdk";
+import { useCall, useCallStateHooks } from "@stream-io/video-react-sdk";
+const AttendenceHostPopup = ({ isAttendencePopop, setIsAttendencePopup }) => {
+  const { useParticipants } = useCallStateHooks();
+  const participants = useParticipants();
   if (!isAttendencePopop) return null;
-
   const handleOutsideClick = (e) => {
     if (e.target.id === "popup-overlay") {
-        setIsAttendencePopup(false);
+      setIsAttendencePopup(false);
     }
   };
 
   return (
     <div
       id="popup-overlay"
-      className="dialog-box fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 backdrop-blur-sm z-10"
+      className="dialog-box-attendance"
       onClick={handleOutsideClick}
     >
-      <div className="bg-black bg-opacity-90 p-6 rounded-xl shadow-xl text-center relative">
+      <div className="popup-content-attendence">
         <button
-          className="absolute top-2 right-2 text-red-500 text-xl font-bold"
+          className="close-button"
           onClick={() => setIsAttendencePopup(false)}
         >
           ×
         </button>
-        <h2 className="text-xl text-yellow-500 font-bold mb-4">Attendence</h2>
-        <p className="mb-4 text-white-500 max-w-2xl">This section is for taking attendance. When you click the button, a popup will appear on the participants' screens. They must mark their attendance; otherwise, they will be marked as absent.</p>
-      <AttendanceButton/>
+        <h2 className="title-attendence">Attendence</h2>
+        <div className="attendence-div-start">
+        <p className="description-attendence">
+          This section is for taking attendence. When you click the button, 
+          a popup will appear on the participants' screens. They must mark 
+          their attendence; otherwise, they will be marked as absent.
+        </p>
+        <div className="attendence-party">{`Total Participants :  ${participants.length}`} 
+        </div>
+        <AttendanceButton />
+        </div>
+        <div className="lowerDiv-attendence">
+        <div className="totol-participants">
+          <div className="Total-party-data">
+     <CallParticipantsList/>
+          </div>
+        </div>
+        <div className="present-participants">Active
+          <div className="present-party-data">
+
+          </div>
+        </div>
+        </div>
       </div>
     </div>
   );

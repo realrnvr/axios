@@ -262,17 +262,22 @@ const MeetingRoom = () => {
           </div>
         </button>
       </div>
-        {isHost &&
-        <FloatingDock 
+        {isHost && <div className="dock-div"> 
+          <FloatingDock 
   items={items}
-  desktopClassName="fixed bottom-20 left-1/2 -translate-x-1/2"
+  desktopClassName="dock-css"
   mobileClassName="fixed bottom-4 right-4"
   defaultBgColor="bg-neutral-800"
   defaultHoverColor="bg-neutral-700"
-/>}
+/>
+HOST CONTROLS
+</div>
+       }
     <StrictModePopup isStrictPopop={isStrictPopop} setIsStrictPopup={setIsStrictPopup}/>
     <AttendenceHostPopup isAttendencePopop={isAttendencePopop} setIsAttendencePopup={setIsAttendencePopup}/>
     <EndCallPopup isEndCallPopop={isEndCallPopop} setEndCallPopup={setEndCallPopup}/>
+    {isStrictMode &&  <div className="warn-strict">Strict Mode is ON </div>}
+
     </section>
   );
 };

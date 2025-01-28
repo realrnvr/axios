@@ -24,7 +24,7 @@ const StrictModeDialog = ({ message, onReenterFullscreen, onTimeout }) => {
     return null; 
   }
   return (
-    <div className="dialog-box fixed inset-0 flex items-center justify-center bg-black bg-opacity-0 backdrop-blur-md z-10">
+    <div className="dialog-box fixed inset-0 flex items-center justify-center bg-black bg-opacity-0 backdrop-blur-sm z-10">
       <div className="bg-black bg-opacity-90 p-6 rounded-xl shadow-xl text-center">
         <h2 className="text-xl text-red-500 font-bold mb-4">
           Strict Mode Alert

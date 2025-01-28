@@ -11,7 +11,7 @@ import Navbar from "@/components/navbar/Navbar";
 import ReactDatePicker from "react-datepicker";
 import JoinMeet from "@/components/JoinMeet";
 import CallList from "@/components/callList/CallList";
-
+import { BackgroundBeams } from "../../components/extraUicom/backgroundBeams";
 const CreateMeet = () => {
   const [isClientReady, setIsClientReady] = useState(false); // Track client readiness
   const [values, setValues] = useState({
@@ -205,6 +205,7 @@ const CreateMeet = () => {
               )}
             </div>
           ) : null}
+           <BackgroundBeams/>
         </div>
         {/* <div className="hero__feature-wrapper">
           <div className="hero__feature">

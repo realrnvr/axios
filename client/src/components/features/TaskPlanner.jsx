@@ -332,6 +332,7 @@ const TaskPlanner = () => {
         ))}
       </div>
       <BackgroundBeams/>
+  
     </div>
   );
 };

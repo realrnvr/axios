@@ -1,6 +1,7 @@
 .centerpart {
   margin-top: 7rem;
   position: relative;
+  height: 100vh;
 }
 
 .centerpart__text {

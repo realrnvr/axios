@@ -1,17 +1,19 @@
 import "./home.css";
 import CenterPart from "@/components/centerPart/CenterPart";
 import Navbar from "@/components/navbar/Navbar";
-import {BackgroundBeams} from "../../components/extraUicom/backgroundBeams"
+import {BackgroundLines} from "../../components/extraUicom/backgroundLines"
+
 const Home = () => {
   return (
-    <>
+    <div className="Home_main_container ">
       <Navbar />
       <div className="home__content">
         <CenterPart />
-        <div className="shadow"></div>
+        {/* <div className="shadow"></div> */}
       </div>
-      <BackgroundBeams/>
-    </>
+      <BackgroundLines className={"opacity-50"}/>
+ 
+    </div>
   );
 };
 

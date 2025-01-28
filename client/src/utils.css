@@ -48,8 +48,8 @@
   -webkit-text-fill-color: transparent;
 }
 
-/* 
-.shadow {
+
+/* .shadow {
   background: hsl(var(--primary) / 0%);
   position: absolute;
   top: 50%;

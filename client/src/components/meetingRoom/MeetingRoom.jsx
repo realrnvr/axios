@@ -17,23 +17,27 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { LayoutList, Users, MessageCircle, Code } from "lucide-react";
+import { LayoutList, Users, MessageCircle, Code, FocusIcon, NotebookIcon, PhoneCall } from "lucide-react";
 import { useNavigate, useSearchParams } from "react-router-dom";
-import EndCallButton from "../endCallButton/EndCallButton";
+
 import CustomLoader from "../customLoader/CustomLoader";
 import ChatMeet from "../chat/ChatMeet";
 import CodeEditor from "../codeEditor/CodeEditor";
 import { useStrictMode } from "../../hooks/useStrictMode";
 import { useStrictModeEnforcement } from "../../hooks/useStrictModeEnforcement";
-import EnableStrictModeButton from "../strictModeButton/StrictModeButton";
+
 import StrictModeDialog from "../strictModeButton/StrictModeDialog";
-import AttendanceButton from "../attendance/AttendanceButton";
+
 import AttendancePopup from "../attendance/AttendancePopup";
-import { isAttendanceActiveAtom } from "../../Atoms/Atom";
+import { isAttendanceActiveAtom ,isHostAtom } from "../../Atoms/Atom";
 import { useRecoilValue } from "recoil";
 import EventListener from "../strictModeButton/EventListener";
 import InputPart from "../codeEditor/InputPart";
 import OutputPart from "../codeEditor/OutputPart";
+import { FloatingDock } from "../extraUicom/floatingDock";
+import StrictModePopup from "../strictModeButton/StrictModePopup";
+import AttendenceHostPopup from "../attendance/AttendenceHostPopup";
+import EndCallPopup from "../endCallButton/EndCallPopup";
 
 const MeetingRoom = () => {
   const [searchParams] = useSearchParams();
@@ -44,14 +48,47 @@ const MeetingRoom = () => {
 
   const [layout, setLayout] = useState("speaker-left");
   const isPersonalRoom = !!searchParams.get("personal");
+  const isHost=useRecoilValue(isHostAtom);
   const [showParticipants, setShowParticipants] = useState(false);
   const [showChat, setShowChat] = useState(false);
   const [showCodeEditor, setShowCodeEditor] = useState(false);
   const meetingId = searchParams.get("id") || "general";
   const [dialogMessage, setDialogMessage] = useState("");
   const [showDialog, setShowDialog] = useState(false);
+  const [isStrictPopop,setIsStrictPopup]=useState(false);
+  const [isAttendencePopop,setIsAttendencePopup]=useState(false);
+  const [isEndCallPopop,setEndCallPopup]=useState(false);
   const isAttendanceActive = useRecoilValue(isAttendanceActiveAtom);
-
+  const items = [
+    {
+      title: "Strict Mode",
+      href: "/",
+      icon: <FocusIcon/>,
+      bgColor: "bg-yellow-600",
+      hoverColor: "bg-yellow-600",
+      iconColor: "text-red-100",
+      onClick: (prev) => setIsStrictPopup(!prev),
+    },
+    {
+      title: "Attendence",
+      href: "/",
+      icon: <NotebookIcon/>,
+      bgColor: "bg-blue-600",
+      hoverColor: "bg-blue-600",
+      iconColor: "text-blue-100",
+      onClick: (prev) => setIsAttendencePopup(!prev),
+    },
+    {
+      title: "Hang up",
+      href: "/",
+      icon: <PhoneCall/>,
+      bgColor: "bg-red-600",
+      hoverColor: "bg-red-600",
+      iconColor: "text-red-100",
+      onClick: (prev) =>setEndCallPopup(!prev),
+    }
+  ];
+  console.log(isPersonalRoom,"is personal room")
   const handleShowDialog = (message) => {
     setDialogMessage(message);
     setShowDialog(true);
@@ -208,7 +245,7 @@ const MeetingRoom = () => {
             setShowParticipants(false);
             setShowCodeEditor(false);
           }}
-        >
+          >
           <div className="cursor-pointer rounded-2xl bg-[#19232d] px-4 py-2 hover:bg-[#4c535b]">
             <MessageCircle size={20} className="text-white" />
           </div>
@@ -224,10 +261,18 @@ const MeetingRoom = () => {
             <Code size={20} className="text-white" />
           </div>
         </button>
-        {!isPersonalRoom && <EnableStrictModeButton />}
-        {!isPersonalRoom && <EndCallButton />}
-        {!isPersonalRoom && <AttendanceButton />}
       </div>
+        {isHost &&
+        <FloatingDock 
+  items={items}
+  desktopClassName="fixed bottom-20 left-1/2 -translate-x-1/2"
+  mobileClassName="fixed bottom-4 right-4"
+  defaultBgColor="bg-neutral-800"
+  defaultHoverColor="bg-neutral-700"
+/>}
+    <StrictModePopup isStrictPopop={isStrictPopop} setIsStrictPopup={setIsStrictPopup}/>
+    <AttendenceHostPopup isAttendencePopop={isAttendencePopop} setIsAttendencePopup={setIsAttendencePopup}/>
+    <EndCallPopup isEndCallPopop={isEndCallPopop} setEndCallPopup={setEndCallPopup}/>
     </section>
   );
 };

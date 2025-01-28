@@ -1,3 +1,7 @@
 .home__content {
   position: relative;
 }
+.Home_main_container{
+max-height: 100vh;
+overflow: hidden;
+}

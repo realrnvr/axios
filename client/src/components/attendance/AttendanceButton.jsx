@@ -29,7 +29,7 @@ const AttendanceButton = () => {
         onClick={triggerAttendance}
         className="bg-blue-500 hover:bg-blue-600"
       >
-        Attendance
+      Take  Attendance
       </Button>
     </div>
   );

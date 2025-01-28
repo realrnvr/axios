@@ -55,8 +55,9 @@ const CallList = ({ type }) => {
                     Meet Id:
                   </label>
                   <Copy
-                    color="#000"
+                    color="#fff"
                     width={17}
+                    style={{ cursor: "pointer" }}
                     onClick={() => {
                       navigator.clipboard.writeText(meeting?.id);
                       toast({ title: "Copied!" });
@@ -73,7 +74,7 @@ const CallList = ({ type }) => {
                 <label htmlFor="meeting-title" className="meeting__label">
                   Title:
                 </label>
-                <p id="meeting-title">
+                <p className="meetin__date" id="meeting-title">
                   {meeting?.state?.custom?.description || "----"}
                 </p>
               </div>
@@ -81,7 +82,7 @@ const CallList = ({ type }) => {
                 <label htmlFor="meeting-title" className="meeting__label">
                   Date:
                 </label>
-                <p>
+                <p className="meetin__date">
                   {new Date(meeting?.state?.startsAt).toLocaleString() ||
                     new Date(meeting?.start_time).toLocaleString()}
                 </p>

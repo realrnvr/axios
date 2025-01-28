@@ -12,6 +12,8 @@ import ReactDatePicker from "react-datepicker";
 import JoinMeet from "@/components/JoinMeet";
 import CallList from "@/components/callList/CallList";
 import { BackgroundBeams } from "../../components/extraUicom/backgroundBeams";
+import Util from "@/components/util/Util";
+
 const CreateMeet = () => {
   const [isClientReady, setIsClientReady] = useState(false); // Track client readiness
   const [values, setValues] = useState({
@@ -96,7 +98,11 @@ const CreateMeet = () => {
   return (
     <>
       <Navbar />
+      <Util />
       <section className="hero | container">
+        <div>
+          <img className="hero__img" src="/meeting.png" alt="" />
+        </div>
         <div className="hero__content-wrapper">
           <div className="hero__content">
             <button
@@ -126,7 +132,7 @@ const CreateMeet = () => {
                   <path d="M512 64C264.6 64 64 264.6 64 512s200.6 448 448 448 448-200.6 448-448S759.4 64 512 64zm0 820c-205.4 0-372-166.6-372-372s166.6-372 372-372 372 166.6 372 372-166.6 372-372 372z" />
                 </svg>
               </figure>
-              <figcaption  className="hero__caption">Join</figcaption>
+              <figcaption className="hero__caption">Join</figcaption>
             </button>
             <CreateButton onClick={createMeeting} />
           </div>

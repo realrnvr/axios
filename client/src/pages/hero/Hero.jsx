@@ -6,14 +6,8 @@ import CreateMeet from "../createMeet/CreateMeet";
 import ReactDatePicker from "react-datepicker";
 import { Button } from "@/components/ui/button";
 import { toast } from "@/hooks/use-toast";
-import { Sidebar } from "lucide-react";
-import {
-  SidebarContent,
-  SidebarFooter,
-  SidebarGroup,
-  SidebarHeader,
-} from "@/components/ui/sidebar";
 import { BackgroundBeams } from "../../components/extraUicom/backgroundBeams";
+
 const Hero = () => {
   const [values, setValues] = useState({
     dateTime: new Date(),
@@ -38,14 +32,6 @@ const Hero = () => {
   return (
     <>
       <Navbar />
-      <Sidebar>
-        <SidebarHeader />
-        <SidebarContent>
-          <SidebarGroup />
-          <SidebarGroup />
-        </SidebarContent>
-        <SidebarFooter />
-      </Sidebar>
       <section className="hero">
         <div className="hero__content">
           <button

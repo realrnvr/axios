@@ -98,6 +98,9 @@ const CreateMeet = () => {
       <Navbar />
       <Util />
       <section className="hero | container">
+        <div>
+          <img className="hero__img" src="/meeting.png" alt="" />
+        </div>
         <div className="hero__content-wrapper">
           <div className="hero__content">
             <button

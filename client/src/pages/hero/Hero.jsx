@@ -36,8 +36,8 @@ const Hero = () => {
   };
 
   return (
-    <> 
-    <Navbar />
+    <>
+      <Navbar />
       <Sidebar>
         <SidebarHeader />
         <SidebarContent>
@@ -146,7 +146,7 @@ const Hero = () => {
           </div>
         ) : null}
       </section>
-      <BackgroundBeams/>
+      <BackgroundBeams />
     </>
   );
 };

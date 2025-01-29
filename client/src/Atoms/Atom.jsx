@@ -31,3 +31,8 @@ export const codeErrorAtom = atom({
   key: "codeError",
   default: "",
 });
+
+export const presentParticipantsAtom = atom({
+  key: 'presentParticipantsAtom',
+  default: []
+});

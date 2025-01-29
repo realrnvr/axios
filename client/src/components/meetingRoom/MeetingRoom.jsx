@@ -277,6 +277,7 @@ HOST CONTROLS
     <AttendenceHostPopup isAttendencePopop={isAttendencePopop} setIsAttendencePopup={setIsAttendencePopup}/>
     <EndCallPopup isEndCallPopop={isEndCallPopop} setEndCallPopup={setEndCallPopup}/>
     {isStrictMode &&  <div className="warn-strict">Strict Mode is ON </div>}
+    {isHost &&  <div className="warn-strict">welcome Host</div>}
 
     </section>
   );

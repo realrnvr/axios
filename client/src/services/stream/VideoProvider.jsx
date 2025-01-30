@@ -19,7 +19,7 @@ const VideoProvider = ({ children }) => {
     const tokenProvider = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:3000/api/v1/stream/token-provider/${sanitizedId}`
+          `axios-7ffy.vercel.app/api/v1/stream/token-provider/${sanitizedId}`
         );
 
         const { token } = response.data;

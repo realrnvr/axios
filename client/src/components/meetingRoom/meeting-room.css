@@ -17,3 +17,7 @@ border: 2px solid rgba(255, 255, 255, 0.193);
   left: 5px;
   color: chartreuse;
 }
+.check-temp{
+  display: none;
+  z-index: -2;
+}

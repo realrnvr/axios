@@ -1,9 +1,12 @@
 import "./util.css";
-import { useState } from "react";
+import { useState,lazy, Suspense } from "react";
 import { useAuth0 } from "@auth0/auth0-react";
-import Upcoming from "@/pages/upcoming/Upcoming";
-import Ended from "@/pages/ended/Ended";
-import TaskPlanner from "../../components/features/TaskPlanner";
+// import Upcoming from "@/pages/upcoming/Upcoming";
+// import Ended from "@/pages/ended/Ended";
+const Ended=lazy(()=>import("@/pages/ended/Ended"));
+const Upcoming =lazy(()=>import("@/pages/upcoming/Upcoming")); 
+const TaskPlanner = lazy(()=>import("../../components/features/TaskPlanner"));
+
 
 const Util = () => {
   const [open, setOpen] = useState(false);
@@ -11,9 +14,9 @@ const Util = () => {
   const { user, isLoading } = useAuth0();
 
   const outletMap = {
-    upcomming: <Upcoming />,
-    ended: <Ended />,
-    taskplanner: <TaskPlanner />
+    upcomming: <Suspense  fallback={<div>Loading</div>}><Upcoming /></Suspense>,
+    ended: <Suspense fallback={<div>Loading</div>}><Ended /></Suspense>,
+    taskplanner:<Suspense fallback={<div>Loading</div>}> <TaskPlanner /></Suspense>
   };
 
   const getOutlet = (type) => {

@@ -221,7 +221,7 @@ const MeetingRoom = () => {
         </div>
       </div>
 
-      <div className="fixed bottom-0 flex flex-wrap w-full items-center justify-center gap-5">
+      <div className="fixed bottom-0 flex flex-wrap w-full items-center justify-center gap-5 callControls-Div">
         <CallControls />
         <DropdownMenu>
           <div className="flex items-center">
@@ -286,7 +286,7 @@ const MeetingRoom = () => {
           <FloatingDock 
   items={items}
   desktopClassName="dock-css"
-  mobileClassName="fixed bottom-4 right-4"
+  mobileClassName="mobile-dock"
   defaultBgColor="bg-neutral-800"
   defaultHoverColor="bg-neutral-700"
 />
@@ -303,7 +303,7 @@ HOST CONTROLS
     <EndCallPopup isEndCallPopop={isEndCallPopop} setEndCallPopup={setEndCallPopup}/>
     </Suspense>
     {isStrictMode &&  <div className="warn-strict">Strict Mode is ON </div>}
-    {isHost &&  <div className="warn-strict">welcome Host</div>}
+    {/* {isHost &&  <div className="warn-strict">welcome Host</div>} */}
     <div className="check-temp"><EnableStrictModeButton/></div>
     </section>
   );

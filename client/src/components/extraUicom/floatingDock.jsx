@@ -20,33 +20,34 @@ export const FloatingDock = ({
   const mouseX = useMotionValue(Infinity);
 
   return (
-    <>
     <motion.div
       onMouseMove={(e) => mouseX.set(e.pageX)}
       onMouseLeave={() => mouseX.set(Infinity)}
       className={`
         z-50 
-        inline-flex h-16 gap-2 md:gap-4 items-end 
+        inline-flex h-16 items-end 
         rounded-2xl backdrop-blur-sm 
-        px-2 md:px-3 pb-3 pt-2 shadow-lg
+        shadow-lg
         w-fit text-center
+        gap-2 px-2 pb-3 pt-2
+        xl:gap-4 xl:px-3
         ${mobileClassName || ''} 
         ${desktopClassName || ''}
-        `}
-        >
-      <p className='pb-1'>Host Controls :</p>
+      `}
+    >
+      <p className='pb-1 hidden xl:block'>Host Controls :</p>
+      <p className='pb-1 xl:hidden'>Controls:</p>
       {items.map((item) => (
         <IconContainer 
-        mouseX={mouseX} 
-        key={item.title} 
-        {...item} 
-        defaultBgColor={defaultBgColor}
-        defaultHoverColor={defaultHoverColor}
-        onItemClick={handleItemClick}
+          mouseX={mouseX} 
+          key={item.title} 
+          {...item} 
+          defaultBgColor={defaultBgColor}
+          defaultHoverColor={defaultHoverColor}
+          onItemClick={handleItemClick}
         />
       ))}
     </motion.div>
-    </>
   );
 };
 
@@ -71,10 +72,11 @@ const IconContainer = ({
     return val - bounds.x - bounds.width / 2;
   });
 
-  const widthTransform = useTransform(distance, [-150, 0, 150], [40, 60, 40]);
-  const heightTransform = useTransform(distance, [-150, 0, 150], [40, 60, 40]);
-  const widthTransformIcon = useTransform(distance, [-150, 0, 150], [20, 30, 20]);
-  const heightTransformIcon = useTransform(distance, [-150, 0, 150], [20, 30, 20]);
+  // Different size transformations for mobile and desktop
+  const widthTransform = useTransform(distance, [-150, 0, 150], [32, 48, 32]);
+  const heightTransform = useTransform(distance, [-150, 0, 150], [32, 48, 32]);
+  const widthTransformIcon = useTransform(distance, [-150, 0, 150], [16, 24, 16]);
+  const heightTransformIcon = useTransform(distance, [-150, 0, 150], [16, 24, 16]);
 
   const width = useSpring(widthTransform, {
     mass: 0.1,
@@ -110,7 +112,13 @@ const IconContainer = ({
         style={{ width, height }}
         onMouseEnter={() => setHovered(true)}
         onMouseLeave={() => setHovered(false)}
-        className={`aspect-square rounded-full ${bgColor || defaultBgColor} hover:${hoverColor || defaultHoverColor} flex items-center justify-center relative`}
+        className={`
+          aspect-square rounded-full 
+          ${bgColor || defaultBgColor} 
+          hover:${hoverColor || defaultHoverColor} 
+          flex items-center justify-center relative
+          xl:scale-125
+        `}
       >
         <AnimatePresence>
           {hovered && (
@@ -118,7 +126,13 @@ const IconContainer = ({
               initial={{ opacity: 0, y: 10, x: "-50%" }}
               animate={{ opacity: 1, y: 0, x: "-50%" }}
               exit={{ opacity: 0, y: 2, x: "-50%" }}
-              className="px-2 py-0.5 whitespace-pre rounded-md bg-neutral-800 border border-neutral-700 text-neutral-200 absolute left-1/2 -translate-x-1/2 -top-8 w-fit text-xs"
+              className="
+                px-2 py-0.5 whitespace-pre rounded-md 
+                bg-neutral-800 border border-neutral-700 
+                text-neutral-200 absolute left-1/2 
+                -translate-x-1/2 -top-8 w-fit 
+                text-[10px] xl:text-xs
+              "
             >
               {title}
             </motion.div>
@@ -134,3 +148,5 @@ const IconContainer = ({
     </a>
   );
 };
+
+export default FloatingDock;

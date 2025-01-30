@@ -1,7 +1,7 @@
 import "./home.css";
 import CenterPart from "@/components/centerPart/CenterPart";
 import Navbar from "@/components/navbar/Navbar";
-import {BackgroundLines} from "../../components/extraUicom/backgroundLines"
+import { BackgroundLines } from "../../components/extraUicom/backgroundLines";
 
 const Home = () => {
   return (
@@ -9,10 +9,8 @@ const Home = () => {
       <Navbar />
       <div className="home__content">
         <CenterPart />
-        {/* <div className="shadow"></div> */}
       </div>
-      <BackgroundLines className={"opacity-50"}/>
- 
+      <BackgroundLines className={"opacity-50"} />
     </div>
   );
 };

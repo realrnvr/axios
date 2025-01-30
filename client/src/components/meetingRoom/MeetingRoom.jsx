@@ -1,3 +1,4 @@
+import { useEffect, useState,lazy, Suspense } from "react";
 import "./meeting-room.css";
 import { cn } from "@/lib/utils";
 import {
@@ -9,7 +10,6 @@ import {
   SpeakerLayout,
   useCallStateHooks,
 } from "@stream-io/video-react-sdk";
-import { useEffect, useState } from "react";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -19,25 +19,34 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { LayoutList, Users, MessageCircle, Code, FocusIcon, NotebookIcon, PhoneCall } from "lucide-react";
 import { useNavigate, useSearchParams } from "react-router-dom";
-
+//Components 
+import { FloatingDock } from "../extraUicom/floatingDock";
 import CustomLoader from "../customLoader/CustomLoader";
-import ChatMeet from "../chat/ChatMeet";
-import CodeEditor from "../codeEditor/CodeEditor";
+const ChatMeet=lazy(()=>import("../chat/ChatMeet"));
+const CodeEditor =lazy(()=>import("../codeEditor/CodeEditor"));
+const AttendenceHostPopup =lazy(()=>import("../attendance/AttendenceHostPopup"));
+const EndCallPopup =lazy(()=>import( "../endCallButton/EndCallPopup"));
+const OutputPart =lazy(()=>import("../codeEditor/OutputPart"));
+const InputPart=lazy(()=>import("../codeEditor/InputPart"));
+const AttendancePopup=lazy(()=>import("../attendance/AttendancePopup"));
+const StrictModePopup = lazy(()=>import("../strictModeButton/StrictModePopup"));
+const StrictModeDialog =lazy(()=>import("../strictModeButton/StrictModeDialog"));
+// import ChatMeet from "../chat/ChatMeet";
+// import CodeEditor from "../codeEditor/CodeEditor";
+// import AttendenceHostPopup from "../attendance/AttendenceHostPopup";
+// import EndCallPopup from "../endCallButton/EndCallPopup";
+// import OutputPart from "../codeEditor/OutputPart";
+// import InputPart from "../codeEditor/InputPart";
+// import StrictModeDialog from "../strictModeButton/StrictModeDialog";
+// import AttendancePopup from "../attendance/AttendancePopup";
+
+//Hooks and Atoms
 import { useStrictMode } from "../../hooks/useStrictMode";
 import { useStrictModeEnforcement } from "../../hooks/useStrictModeEnforcement";
-
-import StrictModeDialog from "../strictModeButton/StrictModeDialog";
-
-import AttendancePopup from "../attendance/AttendancePopup";
 import { isAttendanceActiveAtom ,isHostAtom } from "../../Atoms/Atom";
 import { useRecoilValue } from "recoil";
 import EventListener from "../strictModeButton/EventListener";
-import InputPart from "../codeEditor/InputPart";
-import OutputPart from "../codeEditor/OutputPart";
-import { FloatingDock } from "../extraUicom/floatingDock";
-import StrictModePopup from "../strictModeButton/StrictModePopup";
-import AttendenceHostPopup from "../attendance/AttendenceHostPopup";
-import EndCallPopup from "../endCallButton/EndCallPopup";
+import EnableStrictModeButton from "../strictModeButton/StrictModeButton";
 
 const MeetingRoom = () => {
   const [searchParams] = useSearchParams();
@@ -119,6 +128,11 @@ const MeetingRoom = () => {
     }
   }, [callingState, navigate]);
 
+  // useEffect(()=>{
+  //   //check is host
+
+  // },[])
+
   const CallLayout = () => {
     switch (layout) {
       case "grid": {
@@ -162,13 +176,17 @@ const MeetingRoom = () => {
               <div className="h-1/2 bg-neutral-900 rounded-lg overflow-hidden">
                 <CallLayout />
               </div>
+              <Suspense fallback={<div>loading</div>}> 
               <div className="flex space-x-2">
                <InputPart/>
                <OutputPart/>
               </div>
+              </Suspense>
             </div>
             <div className="h-[calc(100vh-86px)] w-2/3 ml-2 transition-all duration-300 bg-white rounded-lg overflow-hidden">
+            <Suspense fallback={<div>Loading</div>}>
               <CodeEditor />
+            </Suspense>
             </div>
           </>
         ) : (
@@ -197,7 +215,9 @@ const MeetingRoom = () => {
             showChat ? "block" : "hidden"
           )}
         >
+            <Suspense fallback={<div>Loading...</div>}>
           <ChatMeet meetingId={meetingId} />
+        </Suspense>
         </div>
       </div>
 
@@ -273,12 +293,18 @@ const MeetingRoom = () => {
 HOST CONTROLS
 </div>
        }
+       <Suspense fallback={<div>Loading</div>}>
     <StrictModePopup isStrictPopop={isStrictPopop} setIsStrictPopup={setIsStrictPopup}/>
+       </Suspense>
+    <Suspense fallback={<div>Loading</div>}>
     <AttendenceHostPopup isAttendencePopop={isAttendencePopop} setIsAttendencePopup={setIsAttendencePopup}/>
+    </Suspense>
+    <Suspense fallback={<div>Loading</div>} >
     <EndCallPopup isEndCallPopop={isEndCallPopop} setEndCallPopup={setEndCallPopup}/>
+    </Suspense>
     {isStrictMode &&  <div className="warn-strict">Strict Mode is ON </div>}
     {isHost &&  <div className="warn-strict">welcome Host</div>}
-
+    <div className="check-temp"><EnableStrictModeButton/></div>
     </section>
   );
 };

@@ -4,13 +4,14 @@ import { useStreamVideoClient } from "@stream-io/video-react-sdk";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";
+
+
 import { Button } from "@/components/ui/button";
 import CreateButton from "@/components/createButton/CreateButton";
 import CustomLoader from "@/components/customLoader/CustomLoader";
 import Navbar from "@/components/navbar/Navbar";
 import ReactDatePicker from "react-datepicker";
 import JoinMeet from "@/components/JoinMeet";
-import CallList from "@/components/callList/CallList";
 import { BackgroundBeams } from "../../components/extraUicom/backgroundBeams";
 import Util from "@/components/util/Util";
 
@@ -213,22 +214,6 @@ const CreateMeet = () => {
           ) : null}
            <BackgroundBeams/>
         </div>
-        {/* <div className="hero__feature-wrapper">
-          <div className="hero__feature">
-            <div className="hero__schedule-meet">
-              <h2 className="hero__feature-title">Upcomming Meetings:</h2>
-              <div className="hero__upcoming-container">
-                <CallList type="upcoming" />
-              </div>
-            </div>
-            <div className="hero__ended-meet">
-              <h2 className="hero__feature-title">Ended Meetings:</h2>
-              <div className="hero__ended-container">
-                <CallList type="ended" />
-              </div>
-            </div>
-          </div>
-        </div> */}
       </section>
     </>
   );

@@ -1,38 +1,64 @@
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-
+import { lazy, Suspense } from "react";
 import Home from "@/pages/home/Home";
 import ProtectedRoute from "../gaurd/ProtectedRoute";
-import Call from "@/pages/call/Call";
-import Chat_Layout from "@/pages/chat/Chat";
-import CreateMeet from "@/pages/createMeet/CreateMeet";
-import Upcoming from "@/pages/upcoming/Upcoming";
-import TaskPlanner from "@/components/features/TaskPlanner";
-import Ended from "@/pages/ended/Ended";
+
+const Call = lazy(() => import("@/pages/call/Call"));
+const Chat_Layout = lazy(() => import("@/pages/chat/Chat"));
+const CreateMeet = lazy(() => import("@/pages/createMeet/CreateMeet"));
+const Upcoming = lazy(() => import("@/pages/upcoming/Upcoming"));
+const Ended = lazy(() => import("@/pages/ended/Ended"));
+
+const LoadingFallback = () => <div>Loading...</div>;
+
+const SuspenseWrapper = ({ children }) => (
+  <Suspense fallback={<LoadingFallback />}>
+    {children}
+  </Suspense>
+);
 
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <ProtectedRoute element={<CreateMeet />} />,
+    element: (
+        <ProtectedRoute element={<CreateMeet />} />
+    ),
   },
   {
     path: "/onboarding",
-    element: <Home />,
+    element: <Home />, 
   },
   {
     path: "/chat",
-    element: <Chat_Layout />,
+    element: (
+      <SuspenseWrapper>
+        <Chat_Layout />
+      </SuspenseWrapper>
+    ),
   },
   {
     path: "/meeting/:callId",
-    element: <Call />,
+    element: (
+      <SuspenseWrapper>
+        <Call />
+      </SuspenseWrapper>
+    ),
   },
   {
     path: "/upcoming",
-    element: <Upcoming />,
+    element: (
+      <SuspenseWrapper>
+        <Upcoming />
+      </SuspenseWrapper>
+    ),
   },
   {
     path: "/ended",
-    element: <Ended />,
+    element: (
+      <SuspenseWrapper>
+        <Ended />
+      </SuspenseWrapper>
+    ),
   },
 ]);
 

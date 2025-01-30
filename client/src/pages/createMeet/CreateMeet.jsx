@@ -4,15 +4,13 @@ import { useStreamVideoClient } from "@stream-io/video-react-sdk";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";
-
-
 import { Button } from "@/components/ui/button";
+import { BackgroundBeams } from "../../components/extraUicom/backgroundBeams";
 import CreateButton from "@/components/createButton/CreateButton";
 import CustomLoader from "@/components/customLoader/CustomLoader";
 import Navbar from "@/components/navbar/Navbar";
 import ReactDatePicker from "react-datepicker";
 import JoinMeet from "@/components/JoinMeet";
-import { BackgroundBeams } from "../../components/extraUicom/backgroundBeams";
 import Util from "@/components/util/Util";
 
 const CreateMeet = () => {
@@ -212,7 +210,7 @@ const CreateMeet = () => {
               )}
             </div>
           ) : null}
-           <BackgroundBeams/>
+          <BackgroundBeams />
         </div>
       </section>
     </>

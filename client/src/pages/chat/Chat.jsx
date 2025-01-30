@@ -8,6 +8,7 @@ import {
   MessageList,
   MessageInput,
   Thread,
+  useChat,
 } from "stream-chat-react";
 import { StreamChat } from "stream-chat";
 import "stream-chat-react/dist/css/v2/index.css";
@@ -18,7 +19,6 @@ import { Sidebar } from "lucide-react";
 import "./chat.css";
 import { ChatDialog } from "@/components/chat/ChatDialog";
 import { Button } from "@/components/ui/button";
-import { useChat } from "@/services/chat/ChatProvider";
 
 const apiKey = "az7swwjyh7mr";
 const chatClient = StreamChat.getInstance(apiKey);

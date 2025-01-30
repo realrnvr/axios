@@ -8,14 +8,13 @@ import {
   MessageList,
   MessageInput,
   Thread,
-  useChannelStateContext,
+  useChat,
 } from "stream-chat-react";
-import { StreamChat } from 'stream-chat';
+import { StreamChat } from "stream-chat";
 import "stream-chat-react/dist/css/v2/index.css";
 import { toast } from "@/hooks/use-toast";
 import CustomLoader from "@/components/customLoader/CustomLoader";
 import { useAuth0 } from "@auth0/auth0-react";
-import { useChat } from "../../services/chat/chatProvider";
 import { Sidebar } from "lucide-react";
 import "./chat.css";
 import { ChatDialog } from "@/components/chat/ChatDialog";
@@ -30,7 +29,7 @@ export default function ChatLayout() {
   const [clientReady, setClientReady] = useState(false);
   const [isOpen, setIsOpen] = useState(true);
   const token = useChat();
-  
+
   const userId = user?.sub?.replace(/[^a-z0-9@_-]/gi, "_");
 
   useEffect(() => {
@@ -82,7 +81,9 @@ export default function ChatLayout() {
     }
 
     try {
-      const channelId = `${newChannelName.toLowerCase().replace(/\s/g, '-')}-${Date.now()}`;
+      const channelId = `${newChannelName
+        .toLowerCase()
+        .replace(/\s/g, "-")}-${Date.now()}`;
       const channel = chatClient.channel("messaging", channelId, {
         name: newChannelName,
         created_by_id: userId,
@@ -91,9 +92,9 @@ export default function ChatLayout() {
 
       await channel.create();
       await channel.addMembers([userId]);
-      
+
       setNewChannelName("");
-      
+
       toast({
         title: "Channel created",
         description: `${newChannelName} has been created successfully`,
@@ -121,7 +122,7 @@ export default function ChatLayout() {
       }
 
       await channel.delete();
-      
+
       toast({
         title: "Channel deleted",
         description: "Channel has been deleted successfully",
@@ -142,8 +143,8 @@ export default function ChatLayout() {
     <div className="chat-container">
       <Chat client={chatClient} theme="str-chat__theme-dark">
         <div className={`chat-sidebar ${!isOpen ? "closed" : ""}`}>
-          <button 
-            className="toggle-btn" 
+          <button
+            className="toggle-btn"
             onClick={() => setIsOpen(!isOpen)}
             aria-label={isOpen ? "Close sidebar" : "Open sidebar"}
           >
@@ -159,17 +160,16 @@ export default function ChatLayout() {
             />
           </div>
           <div className="sidebar-channelList">
-            <ChannelList 
-              sort={{ last_message_at: -1 }}
-              showChannelSearch
-            />
+            <ChannelList sort={{ last_message_at: -1 }} showChannelSearch />
           </div>
         </div>
         <div className="chatbox-chat">
           <Channel>
             <Window>
               <ChannelHeader />
-           <Button variant="destructive" onClick={deleteChannel}>Delete</Button>
+              <Button variant="destructive" onClick={deleteChannel}>
+                Delete
+              </Button>
               <MessageList />
               <MessageInput focus audioRecordingEnabled />
             </Window>

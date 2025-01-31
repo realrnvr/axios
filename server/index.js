@@ -11,7 +11,7 @@ import chatRouter from "./router/chat.js";
 // frontend ports to allow
 app.use(
   cors({
-    origin: ["https://axios-kohl.vercel.app"],
+    origin: ["https://enteract-video.vercel.app,http://localhost:5173, http://localhost:4173"],
     credentials: true,
   })
 );

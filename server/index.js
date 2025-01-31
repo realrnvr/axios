@@ -11,9 +11,9 @@ import chatRouter from "./router/chat.js";
 // frontend ports to allow
 app.use(
   cors({
-    origin: [
-      "https://enteract-video.vercel.app"
-    ],
+    origin: 
+      "https://enteract-video.vercel.app",
+    
     credentials: true,
   })
 );

@@ -25,7 +25,7 @@ const ChatProvider = ({ children }) => {
       try {
         const sanitizedId = user.sub.replace(/[^a-z0-9@_-]/gi, "_");
         const response = await axios.get(
-          `https://axios-7ffy.vercel.app/api/v1/chat/chat-token/${sanitizedId}`
+          `https://axios-fky5.vercel.app/api/v1/chat/chat-token/${sanitizedId}`
         );
         const { token } = response.data;
         if (!token) throw new Error("Token is missing");

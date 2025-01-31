@@ -12,9 +12,7 @@ import chatRouter from "./router/chat.js";
 app.use(
   cors({
     origin: [
-      "https://enteract-video.vercel.app",
-      "http://localhost:5173",
-      "http://localhost:4173"
+      "https://enteract-video.vercel.app"
     ],
     credentials: true,
   })

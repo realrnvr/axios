@@ -11,10 +11,15 @@ import chatRouter from "./router/chat.js";
 // frontend ports to allow
 app.use(
   cors({
-    origin: ["https://enteract-video.vercel.app,http://localhost:5173, http://localhost:4173"],
+    origin: [
+      "https://enteract-video.vercel.app",
+      "http://localhost:5173",
+      "http://localhost:4173"
+    ],
     credentials: true,
   })
 );
+
 // stream router
 // http://localhost:3000/api/v1/stream/...
 

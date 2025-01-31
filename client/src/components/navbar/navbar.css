@@ -13,6 +13,7 @@
   border: 2px solid rgba(255, 255, 255, 0.229);
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
+  z-index: 999;
 }
 
 .logo {
@@ -30,3 +31,13 @@
   opacity: 0.8;
   margin-right: 1rem;
 }
+
+
+@media (max-width: 475px) {
+  .navbar{
+    width: 90%;
+    position: fixed;
+    top: 10px;
+
+  }
+ }

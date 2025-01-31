@@ -65,7 +65,7 @@ border: 2px solid rgba(255, 255, 255, 0.193);
     min-width: 500px; 
     padding: 1rem;
     border-radius: 1rem;
-    backdrop-filter: blur(8px);
+    /* backdrop-filter: blur(8px); */
   }
 }
 

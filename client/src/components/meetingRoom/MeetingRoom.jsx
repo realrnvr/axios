@@ -68,6 +68,8 @@ const MeetingRoom = () => {
   const [isAttendencePopop,setIsAttendencePopup]=useState(false);
   const [isEndCallPopop,setEndCallPopup]=useState(false);
   const isAttendanceActive = useRecoilValue(isAttendanceActiveAtom);
+  const [showCodeEditorButton, setShowCodeEditorButton] = useState(true);
+  const [showChatButton, setShowChatButton] = useState(true);
   const items = [
     {
       title: "Strict Mode",
@@ -121,6 +123,30 @@ const MeetingRoom = () => {
     isStrictMode,
     onShowDialog: handleShowDialog,
   });
+
+  useEffect(() => {
+    const handleResize = () => {
+      setShowCodeEditorButton(window.innerWidth >= 1200);
+      setShowChatButton(window.innerWidth >= 720);
+      
+      // If window is resized below threshold, close the respective panels
+      if (window.innerWidth < 1200 && showCodeEditor) {
+        setShowCodeEditor(false);
+      }
+      if (window.innerWidth < 720 && showChat) {
+        setShowChat(false);
+      }
+    };
+
+    // Initial check
+    handleResize();
+
+    // Add event listener
+    window.addEventListener('resize', handleResize);
+
+    // Cleanup
+    return () => window.removeEventListener('resize', handleResize);
+  }, [showCodeEditor, showChat]);
 
   useEffect(() => {
     if (callingState === CallingState.LEFT) {
@@ -248,7 +274,7 @@ const MeetingRoom = () => {
           </DropdownMenuContent>
         </DropdownMenu>
         <CallStatsButton />
-        <button
+     <button
           onClick={() => {
             setShowParticipants((prevShowParticipants) => !prevShowParticipants);
             setShowChat(false);
@@ -259,7 +285,7 @@ const MeetingRoom = () => {
             <Users size={20} className="text-white" />
           </div>
         </button>
-        <button
+        { showChatButton && <button
           onClick={() => {
             setShowChat((prev) => !prev);
             setShowParticipants(false);
@@ -269,8 +295,8 @@ const MeetingRoom = () => {
           <div className="cursor-pointer rounded-2xl bg-[#19232d] px-4 py-2 hover:bg-[#4c535b]">
             <MessageCircle size={20} className="text-white" />
           </div>
-        </button>
-        <button
+        </button>}
+        {showCodeEditorButton && <button
           onClick={() => {
             setShowCodeEditor((prev) => !prev);
             setShowParticipants(false);
@@ -280,7 +306,7 @@ const MeetingRoom = () => {
           <div className="cursor-pointer rounded-2xl bg-[#19232d] px-4 py-2 hover:bg-[#4c535b]">
             <Code size={20} className="text-white" />
           </div>
-        </button>
+        </button>}
       </div>
         {isHost && <div className="dock-div"> 
           <FloatingDock 

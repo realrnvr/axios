@@ -3,7 +3,7 @@
     <img src="./Untitled.png" alt="CoC Inheritance 2024" width="500" height="166">
   </a>
   <br>
- EnterAct
+ Axios [project name (EnterAct)]
 </h1>
 
 <div align="center">

@@ -102,7 +102,7 @@ const CreateMeet = () => {
         <div>
           <img className="hero__img" src="/meeting.png" alt="" />
         </div>
-        <div className="hero__content-wrapper">
+        <div className="hero__content-wrapper | container">
           <div className="hero__content">
             <button
               to="/schedule"

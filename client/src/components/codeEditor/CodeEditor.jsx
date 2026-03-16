@@ -142,7 +142,7 @@ const CodeEditor = () => {
   }, [call,setCodeError,setOutput]);
 
   return (
-    <div className="flex flex-col h-full bg-neutral-900 w-full gap-4 p-4">
+    <div className="flex flex-col h-full bg-neutral-900 w-full gap-4 p-4 code-editior-wrapper">
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2">
           <Button 

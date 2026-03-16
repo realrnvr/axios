@@ -11,10 +11,11 @@ import chatRouter from "./router/chat.js";
 // frontend ports to allow
 app.use(
   cors({
-    origin: ["http://localhost:5173"],
+    origin: ["https://axios-kohl.vercel.app"],
     credentials: true,
   }),
 );
+
 // stream router
 // http://localhost:3000/api/v1/stream/...
 

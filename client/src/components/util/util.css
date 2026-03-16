@@ -36,11 +36,11 @@
   overflow-y: auto;
   background: linear-gradient(
     135deg,
-    rgba(255, 255, 255, 0.1),
+    rgba(20, 19, 19, 0.915),
     rgba(255, 255, 255, 0)
   );
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(5px);
   border: 1px solid rgba(255, 255, 255, 0.18);
   box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
 }
@@ -136,7 +136,99 @@
 }
 
 /* Xs */
-/* @media (min-width: 475px) {} */
+/* Xs - Mobile screens */
+@media (max-width: 475px) {
+  .sliderbar__container-l {
+    width: 50%;
+    transform: translateX(-120%);
+  }
+  .sliderbar__container-l--open {
+    transform: translateX(0);
+  }
+
+  .sliderbar__container-r {
+    transform: translateX(100%);
+    width: 100%;
+    padding: 0.5rem;
+    backdrop-filter: none; 
+    -webkit-backdrop-filter: none;
+    /* backdrop-filter: blur(5px);
+  /* -webkit-backdrop-filter: blur(5px); */
+  /* background: linear-gradient(
+    135deg,
+    rgba(8, 7, 7, 0.623),
+    rgba(255, 255, 255, 0) */
+ background-color: #1c1917;
+  }
+  .sliderbar__container-r--open {
+    transform: translateX(0);
+  }
+
+  .slider__grid {
+    grid-template-columns: 1fr;
+    gap: 0.5rem;
+  }
+
+  .slider__user {
+    font-size: 1.5rem;
+  }
+
+  .slider__nav-btn {
+    font-size: 14px;
+    padding: 0.5rem;
+    gap: 0.5rem;
+  }
+
+  .slider__nav-btn span {
+    font-size: 14px;
+  }
+
+  .slider__option {
+ border: 2px solid rgba(255, 255, 255, 0.478);
+ background-color: rgb(33, 23, 23);
+border-radius: 1rem; 
+position: fixed;
+bottom: 10px;
+left: 10px;
+  }
+
+  .slider__option button {
+    padding: 0.25rem;
+  }
+
+  .slider__intro-title {
+    font-size: 2rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .slider__description {
+    font-size: 1rem;
+    line-height: 1.4;
+  }
+
+  .slider__strong {
+    font-size: 1rem;
+  }
+
+  .slider__sec-title {
+    font-size: 1.5rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .slidebar__svg {
+    width: 24px;
+  }
+
+  .slider__btn-title {
+    font-size: 1rem;
+  }
+  .open-close-sidebar{
+    position: fixed;
+    bottom: 10px;
+
+  }
+
+}
 
 /* Sm */
 /* @media (min-width: 640px) {} */

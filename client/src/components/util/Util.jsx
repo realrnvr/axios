@@ -34,7 +34,7 @@ const Util = () => {
               open ? "sliderbar__container-l--open" : null
             }`}
           >
-            <button onClick={() => setOpen((prevOpen) => !prevOpen)}>
+            <button className="open-close-sidebar" onClick={() => setOpen((prevOpen) => !prevOpen)}>
               <svg viewBox="0 0 24 24" className="slidebar__svg">
                 <path
                   fill="currentColor"

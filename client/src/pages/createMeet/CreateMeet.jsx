@@ -197,8 +197,7 @@ const CreateMeet = () => {
                     variant="secondary"
                     onClick={() => {
                       navigator.clipboard.writeText(
-                        `${
-                          import.meta.VITE_BASE_URL || "localhost:5173"
+                        `${import.meta.env.VITE_BASE_URL || "localhost:5173"
                         }/meeting/${callDetails?.id}`
                       );
                       toast({ title: "Link Copied!" });

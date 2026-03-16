@@ -1,4 +1,4 @@
-import { useEffect, useState,lazy, Suspense } from "react";
+import { useEffect, useState, lazy, Suspense } from "react";
 import "./meeting-room.css";
 import { cn } from "@/lib/utils";
 import {
@@ -22,15 +22,15 @@ import { useNavigate, useSearchParams } from "react-router-dom";
 //Components 
 import { FloatingDock } from "../extraUicom/floatingDock";
 import CustomLoader from "../customLoader/CustomLoader";
-const ChatMeet=lazy(()=>import("../chat/ChatMeet"));
-const CodeEditor =lazy(()=>import("../codeEditor/CodeEditor"));
-const AttendenceHostPopup =lazy(()=>import("../attendance/AttendenceHostPopup"));
-const EndCallPopup =lazy(()=>import( "../endCallButton/EndCallPopup"));
-const OutputPart =lazy(()=>import("../codeEditor/OutputPart"));
-const InputPart=lazy(()=>import("../codeEditor/InputPart"));
-const AttendancePopup=lazy(()=>import("../attendance/AttendancePopup"));
-const StrictModePopup = lazy(()=>import("../strictModeButton/StrictModePopup"));
-const StrictModeDialog =lazy(()=>import("../strictModeButton/StrictModeDialog"));
+const ChatMeet = lazy(() => import("../chat/ChatMeet"));
+const CodeEditor = lazy(() => import("../codeEditor/CodeEditor"));
+const AttendenceHostPopup = lazy(() => import("../attendance/AttendenceHostPopup"));
+const EndCallPopup = lazy(() => import("../endCallButton/EndCallPopup"));
+const OutputPart = lazy(() => import("../codeEditor/OutputPart"));
+const InputPart = lazy(() => import("../codeEditor/InputPart"));
+const AttendancePopup = lazy(() => import("../attendance/AttendancePopup"));
+const StrictModePopup = lazy(() => import("../strictModeButton/StrictModePopup"));
+const StrictModeDialog = lazy(() => import("../strictModeButton/StrictModeDialog"));
 // import ChatMeet from "../chat/ChatMeet";
 // import CodeEditor from "../codeEditor/CodeEditor";
 // import AttendenceHostPopup from "../attendance/AttendenceHostPopup";
@@ -43,7 +43,7 @@ const StrictModeDialog =lazy(()=>import("../strictModeButton/StrictModeDialog"))
 //Hooks and Atoms
 import { useStrictMode } from "../../hooks/useStrictMode";
 import { useStrictModeEnforcement } from "../../hooks/useStrictModeEnforcement";
-import { isAttendanceActiveAtom ,isHostAtom } from "../../Atoms/Atom";
+import { isAttendanceActiveAtom, isHostAtom } from "../../Atoms/Atom";
 import { useRecoilValue } from "recoil";
 import EventListener from "../strictModeButton/EventListener";
 import EnableStrictModeButton from "../strictModeButton/StrictModeButton";
@@ -57,22 +57,22 @@ const MeetingRoom = () => {
 
   const [layout, setLayout] = useState("speaker-left");
   const isPersonalRoom = !!searchParams.get("personal");
-  const isHost=useRecoilValue(isHostAtom);
+  const isHost = useRecoilValue(isHostAtom);
   const [showParticipants, setShowParticipants] = useState(false);
   const [showChat, setShowChat] = useState(false);
   const [showCodeEditor, setShowCodeEditor] = useState(false);
   const meetingId = searchParams.get("id") || "general";
   const [dialogMessage, setDialogMessage] = useState("");
   const [showDialog, setShowDialog] = useState(false);
-  const [isStrictPopop,setIsStrictPopup]=useState(false);
-  const [isAttendencePopop,setIsAttendencePopup]=useState(false);
-  const [isEndCallPopop,setEndCallPopup]=useState(false);
+  const [isStrictPopop, setIsStrictPopup] = useState(false);
+  const [isAttendencePopop, setIsAttendencePopup] = useState(false);
+  const [isEndCallPopop, setEndCallPopup] = useState(false);
   const isAttendanceActive = useRecoilValue(isAttendanceActiveAtom);
   const items = [
     {
       title: "Strict Mode",
       href: "/",
-      icon: <FocusIcon/>,
+      icon: <FocusIcon />,
       bgColor: "bg-yellow-600",
       hoverColor: "bg-yellow-600",
       iconColor: "text-red-100",
@@ -81,7 +81,7 @@ const MeetingRoom = () => {
     {
       title: "Attendence",
       href: "/",
-      icon: <NotebookIcon/>,
+      icon: <NotebookIcon />,
       bgColor: "bg-blue-600",
       hoverColor: "bg-blue-600",
       iconColor: "text-blue-100",
@@ -90,14 +90,14 @@ const MeetingRoom = () => {
     {
       title: "Hang up",
       href: "/",
-      icon: <PhoneCall/>,
+      icon: <PhoneCall />,
       bgColor: "bg-red-600",
       hoverColor: "bg-red-600",
       iconColor: "text-red-100",
-      onClick: (prev) =>setEndCallPopup(!prev),
+      onClick: (prev) => setEndCallPopup(!prev),
     }
   ];
-  console.log(isPersonalRoom,"is personal room")
+  console.log(isPersonalRoom, "is personal room")
   const handleShowDialog = (message) => {
     setDialogMessage(message);
     setShowDialog(true);
@@ -176,17 +176,17 @@ const MeetingRoom = () => {
               <div className="h-1/2 bg-neutral-900 rounded-lg overflow-hidden">
                 <CallLayout />
               </div>
-              <Suspense fallback={<div>loading</div>}> 
-              <div className="flex space-x-2">
-               <InputPart/>
-               <OutputPart/>
-              </div>
+              <Suspense fallback={<div>loading</div>}>
+                <div className="flex space-x-2">
+                  <InputPart />
+                  <OutputPart />
+                </div>
               </Suspense>
             </div>
             <div className="h-[calc(100vh-86px)] w-2/3 ml-2 transition-all duration-300 bg-white rounded-lg overflow-hidden">
-            <Suspense fallback={<div>Loading</div>}>
-              <CodeEditor />
-            </Suspense>
+              <Suspense fallback={<div>Loading</div>}>
+                <CodeEditor />
+              </Suspense>
             </div>
           </>
         ) : (
@@ -215,9 +215,9 @@ const MeetingRoom = () => {
             showChat ? "block" : "hidden"
           )}
         >
-            <Suspense fallback={<div>Loading...</div>}>
-          <ChatMeet meetingId={meetingId} />
-        </Suspense>
+          <Suspense fallback={<div>Loading...</div>}>
+            <ChatMeet meetingId={meetingId} />
+          </Suspense>
         </div>
       </div>
 
@@ -265,7 +265,7 @@ const MeetingRoom = () => {
             setShowParticipants(false);
             setShowCodeEditor(false);
           }}
-          >
+        >
           <div className="cursor-pointer rounded-2xl bg-[#19232d] px-4 py-2 hover:bg-[#4c535b]">
             <MessageCircle size={20} className="text-white" />
           </div>
@@ -282,7 +282,7 @@ const MeetingRoom = () => {
           </div>
         </button>
       </div>
-        {isHost && <div className="dock-div"> 
+      {/* {isHost && <div className="dock-div"> 
           <FloatingDock 
   items={items}
   desktopClassName="dock-css"
@@ -292,19 +292,19 @@ const MeetingRoom = () => {
 />
 HOST CONTROLS
 </div>
-       }
-       <Suspense fallback={<div>Loading</div>}>
-    <StrictModePopup isStrictPopop={isStrictPopop} setIsStrictPopup={setIsStrictPopup}/>
-       </Suspense>
-    <Suspense fallback={<div>Loading</div>}>
-    <AttendenceHostPopup isAttendencePopop={isAttendencePopop} setIsAttendencePopup={setIsAttendencePopup}/>
-    </Suspense>
-    <Suspense fallback={<div>Loading</div>} >
-    <EndCallPopup isEndCallPopop={isEndCallPopop} setEndCallPopup={setEndCallPopup}/>
-    </Suspense>
-    {isStrictMode &&  <div className="warn-strict">Strict Mode is ON </div>}
-    {/* {isHost &&  <div className="warn-strict">welcome Host</div>} */}
-    <div className="check-temp"><EnableStrictModeButton/></div>
+       } */}
+      <Suspense fallback={<div>Loading</div>}>
+        <StrictModePopup isStrictPopop={isStrictPopop} setIsStrictPopup={setIsStrictPopup} />
+      </Suspense>
+      <Suspense fallback={<div>Loading</div>}>
+        <AttendenceHostPopup isAttendencePopop={isAttendencePopop} setIsAttendencePopup={setIsAttendencePopup} />
+      </Suspense>
+      <Suspense fallback={<div>Loading</div>} >
+        <EndCallPopup isEndCallPopop={isEndCallPopop} setEndCallPopup={setEndCallPopup} />
+      </Suspense>
+      {isStrictMode && <div className="warn-strict">Strict Mode is ON </div>}
+      {/* {isHost &&  <div className="warn-strict">welcome Host</div>} */}
+      <div className="check-temp"><EnableStrictModeButton /></div>
     </section>
   );
 };

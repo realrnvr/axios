@@ -21,12 +21,12 @@ const router = createBrowserRouter([
   {
     path: "/",
     element: (
-        <ProtectedRoute element={<CreateMeet />} />
+      <ProtectedRoute element={<CreateMeet />} />
     ),
   },
   {
     path: "/onboarding",
-    element: <Home />, 
+    element: <Home />,
   },
   {
     path: "/chat",

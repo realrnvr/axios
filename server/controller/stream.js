@@ -17,7 +17,7 @@ export const tokenProvider = (req, res) => {
   try {
     const token = client.generateUserToken({
       user_id: userId,
-      validity_in_seconds: 3600, // 1hr
+      validity_in_seconds: 86400, // 24hrs
     });
 
     res.status(200).json({ token });
